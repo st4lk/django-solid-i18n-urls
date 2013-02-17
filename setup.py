@@ -10,7 +10,7 @@ setup(
     license='BSD License',
     package_dir={'solid_i18n': 'solid_i18n'},
     description='Django i18n middleware and url pattern without redirects',
-    long_description=open('README.txt').read(),
+    long_description=open('README.md').read(),
     url='http://www.lexev.org/',
     author=__author__,
     author_email='alexevseev@gmail.com',
