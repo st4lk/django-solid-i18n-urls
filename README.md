@@ -16,7 +16,7 @@ Quick start
 
 1. Install this package to your python distribution:
 
-        - pip install https://github.com/st4lk/django-solid-i18n-urls
+        - pip install git+https://github.com/st4lk/django-solid-i18n-urls.git
 
         or
 
