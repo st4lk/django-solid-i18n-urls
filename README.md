@@ -1,7 +1,13 @@
 Django solid_i18n urls
 =====
 
-solid_i18n contains middleware and url patterns to enable i18n urls without redirects. Some search engines don't index site with redirects well.
+.. image:: https://travis-ci.org/st4lk/django-solid-i18n-urls.png?branch=master
+    :target: https://travis-ci.org/st4lk/django-solid-i18n-urls
+
+.. image:: https://coveralls.io/repos/st4lk/django-solid-i18n-urls/badge.png?branch=master
+    :target: https://coveralls.io/r/st4lk/django-solid-i18n-urls?branch=master
+
+solid_i18n contains middleware and url patterns to enable i18n urls without redirects.
 
 With solid_i18n, default language will be used for request
 without language prefix. Non default languages works same as builtin [i18n_patterns](https://docs.djangoproject.com/en/dev/topics/i18n/translation/#django.conf.urls.i18n.i18n_patterns).
@@ -14,13 +20,13 @@ Quick start
 
 1. Install this package to your python distribution:
 
-    - pip install https://github.com/st4lk/django-solid-i18n-urls
+- pip install https://github.com/st4lk/django-solid-i18n-urls
 
-    **or**
+**or**
 
-    - git clone https://github.com/st4lk/django-solid-i18n-urls
-    - cd django-solid-i18n-urls
-    - python setup.py install
+- git clone https://github.com/st4lk/django-solid-i18n-urls
+- cd django-solid-i18n-urls
+- python setup.py install
 
 2. Set languages in settings.py:
 
