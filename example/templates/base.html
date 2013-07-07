@@ -1,0 +1,58 @@
+{% load i18n %}
+{% load url from future %}
+
+<!DOCTYPE html>
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{LANGUAGE_CODE}}">
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}{% endblock title %}</title>
+
+    <!-- Le styles -->
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+    <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+      .lang_active {
+        color: #51a351 !important;
+        font-weight:bold;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="{% url 'home' %}">{% trans "Django solid i18n urls example" %}</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
+              <li><a href="{% url 'about' %}">{% trans "About" %}</a></li>
+              <li><a href="{% url 'onelang' %}">{% trans "Link without i18n" %}</a></li>
+            </ul>
+            {% block lang_choose %}
+            <ul class="nav pull-right">
+                {% if LANGUAGE_CODE == 'en' %}
+                  <li><a class="lang_active" href="{{request.get_full_path}}" >EN</a></li>
+                  <li><a href="/ru{{request.get_full_path}}" >RU</a></li>
+                {% else %}
+                  <li><a href="{{request.get_full_path|slice:'3:'}}" >EN</a></li>
+                  <li><a class="lang_active" href="{{request.get_full_path}}" >RU</a></li>
+                {% endif %}
+            </ul>
+            {% endblock lang_choose %}
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      {% block content %}{% endblock content %}
+
+    </div> <!-- /container -->
+
+  </body>
+</html>

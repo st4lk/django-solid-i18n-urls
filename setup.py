@@ -1,5 +1,13 @@
+import os
 from setuptools import setup, find_packages
 from solid_i18n import __author__, __version__
+
+
+def __read(fname):
+    try:
+        return open(os.path.join(os.path.dirname(__file__), fname)).read()
+    except IOError:
+        return ''
 
 setup(
     name='django-solid-i18n-urls',
@@ -10,7 +18,7 @@ setup(
     license='BSD License',
     package_dir={'solid_i18n': 'solid_i18n'},
     description='Django i18n middleware and url pattern without redirects',
-    long_description=open('README.md').read(),
+    long_description=__read('README.rst'),
     url='http://www.lexev.org/',
     author=__author__,
     author_email='alexevseev@gmail.com',

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load url from future %}
+
+{% block title %}
+    {% trans "Solid urls home" %}
+{% endblock title %}
+
+{% block content %}
+    <p>{% trans "Hello! This is an example home page for django-solid-i18n-urls package usage" %}.</p>
+    <p>{% trans "This example site supports two languages: english (default) and russian. As you can see, when accessing url without language prefix, default language is used. It is declared in settings.LANGUAGE_CODE. For more details visit" %} <a href="https://github.com/st4lk/django-solid-i18n-urls">https://github.com/st4lk/django-solid-i18n-urls</a>.</p>
+    <p>{% trans "Languages can be switched using buttons in right-up corner" %}.</p>
+{% endblock content %}

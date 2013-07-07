@@ -1,1 +1,6 @@
 *.py[co]
+*.TODO
+*.sublime-project
+*.sublime-workspace
+activate_venv.bat
+.tox/
