@@ -1,9 +1,7 @@
 Django solid_i18n urls
 =====
 
-[![Build Status](https://travis-ci.org/st4lk/django-solid-i18n-urls.png?branch=master)](https://travis-ci.org/st4lk/django-solid-i18n-urls)
-
-[![Coverage Status](https://coveralls.io/repos/st4lk/django-solid-i18n-urls/badge.png?branch=master)](https://coveralls.io/r/st4lk/django-solid-i18n-urls?branch=master)
+[![Build Status](https://travis-ci.org/st4lk/django-solid-i18n-urls.png?branch=master)](https://travis-ci.org/st4lk/django-solid-i18n-urls) [![Coverage Status](https://coveralls.io/repos/st4lk/django-solid-i18n-urls/badge.png?branch=master)](https://coveralls.io/r/st4lk/django-solid-i18n-urls?branch=master)
 
 solid_i18n contains middleware and url patterns to enable i18n urls without redirects.
 
@@ -18,13 +16,13 @@ Quick start
 
 1. Install this package to your python distribution:
 
-    - pip install https://github.com/st4lk/django-solid-i18n-urls
+        - pip install https://github.com/st4lk/django-solid-i18n-urls
 
-    or
+        or
 
-    - git clone https://github.com/st4lk/django-solid-i18n-urls
-    - cd django-solid-i18n-urls
-    - python setup.py install
+        - git clone https://github.com/st4lk/django-solid-i18n-urls
+        - cd django-solid-i18n-urls
+        - python setup.py install
 
 2. Set languages in settings.py:
 
