@@ -1,0 +1,26 @@
+language: python
+
+python:
+  - "2.7"
+
+env:
+  - TOXENV=py26-14
+  - TOXENV=py26-15
+  - TOXENV=py27-14
+  - TOXENV=py27-15
+
+
+branches:
+    only:
+        - master
+
+install: pip install --quiet --use-mirrors tox
+
+# command to run tests
+script: tox
+
+after_script:
+    - if [ $TOXENV == "py27-15" ]; then
+        pip install --quiet --use-mirrors coveralls;
+        coveralls;
+      fi
