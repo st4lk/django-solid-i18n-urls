@@ -27,12 +27,12 @@ Quick start
 2. Set languages in settings.py:
 
         # Default language, that will be used for requests without language prefix
-        LANGUAGE_CODE = 'ru'
+        LANGUAGE_CODE = 'en'
 
         # supported languages
         LANGUAGES = (
-            ('ru', 'Russian'),
             ('en', 'English'),
+            ('ru', 'Russian'),
         )
 
         # enable django translation
@@ -66,4 +66,4 @@ Quick start
             url(r'^news/', include(news_patterns, namespace='news')),
         )
 
-5. Start the development server and visit http://127.0.0.1:8000/about/ to see Russian content. Visit http://127.0.0.1:8000/en/about/ to see English content. Of course, you must specify translation for all languages you've marked as supported. For details look here: [https://docs.djangoproject.com/en/dev/topics/i18n/translation/](https://docs.djangoproject.com/en/dev/topics/i18n/translation/)
+5. Start the development server and visit http://127.0.0.1:8000/about/ to see English content. Visit http://127.0.0.1:8000/ru/about/ to see Russian content. Of course, you must specify translation for all languages you've marked as supported. For details look here: [https://docs.djangoproject.com/en/dev/topics/i18n/translation/](https://docs.djangoproject.com/en/dev/topics/i18n/translation/)
