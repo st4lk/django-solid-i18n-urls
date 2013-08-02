@@ -2,8 +2,6 @@ from django.conf import settings
 from django.core.urlresolvers import get_resolver
 from django.utils.cache import patch_vary_headers
 from django.utils import translation
-from django.utils.translation.trans_real import (language_code_prefix_re,
-    check_for_language)
 from urlresolvers import SolidLocaleRegexURLResolver
 
 
@@ -19,13 +17,8 @@ class SolidLocaleMiddleware(object):
 
     def process_request(self, request):
         if self.is_language_prefix_patterns_used():
-            supported = dict(settings.LANGUAGES)
-            language = settings.LANGUAGE_CODE
-            regex_match = language_code_prefix_re.match(request.path_info)
-            if regex_match:
-                lang_code = regex_match.group(1)
-                if lang_code in supported and check_for_language(lang_code):
-                    language = lang_code
+            language = translation.get_language_from_path(request.path_info)
+            language = language or settings.LANGUAGE_CODE
         else:
             language = translation.get_language_from_request(request)
         translation.activate(language)
