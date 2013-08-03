@@ -123,7 +123,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.tz",
     "django.contrib.messages.context_processors.messages",
     "django.core.context_processors.request",
-    'django.core.context_processors.i18n'
+    'django.core.context_processors.i18n',
+    'example.context_processors.solid_i18n',
 )
 
 ROOT_URLCONF = 'example.urls'
@@ -151,7 +152,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
 )
 
-SOLID_I18N_USE_REDIRECTS = False
+SOLID_I18N_USE_REDIRECTS = True
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

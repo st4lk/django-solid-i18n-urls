@@ -46,6 +46,7 @@
             </ul>
             {% block lang_choose %}
             <ul id="set_lang" class="nav pull-right">
+              {% if example_vars.SOLID_I18N_USE_REDIRECTS %}
                 {% if LANGUAGE_CODE == 'en' %}
                   <li>
                     <form action="/i18n/setlang/" method="post">
@@ -82,6 +83,15 @@
                     </form>
                   </li>
                 {% endif %}
+              {% else %}
+                    {% if LANGUAGE_CODE == 'en' %}
+                      <li><a class="lang_active" href="{{request.get_full_path}}" >EN</a></li>
+                      <li><a href="/ru{{request.get_full_path}}" >RU</a></li>
+                    {% else %}
+                      <li><a href="{{request.get_full_path|slice:'3:'}}" >EN</a></li>
+                      <li><a class="lang_active" href="{{request.get_full_path}}" >RU</a></li>
+                    {% endif %}
+              {% endif %}
               </ul>
             {% endblock lang_choose %}
           </div><!--/.nav-collapse -->
