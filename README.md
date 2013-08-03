@@ -14,7 +14,7 @@ There are two modes:
  then default language will be used. If request does have prefix, language
  from that prefix will be used.
 
- 2. `settings.LANGUAGE_CODE = True`. In that case, for root paths (without
+ 2. `settings.SOLID_I18N_USE_REDIRECTS = True`. In that case, for root paths (without
  prefix), django will [try to discover](https://docs.djangoproject.com/en/dev/topics/i18n/translation/#how-django-discovers-language-preference) user preferred language. If it doesn't equal to default language, redirect to path with corresponding
  prefix will occur. If preferred language is the same as default, then that request
  path will be processed (without redirect). Also see notes below.
