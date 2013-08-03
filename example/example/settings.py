@@ -152,7 +152,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
 )
 
-SOLID_I18N_USE_REDIRECTS = True
+SOLID_I18N_USE_REDIRECTS = False
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
