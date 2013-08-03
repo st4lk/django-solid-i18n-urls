@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import patterns, url, include
 from django.views.generic import TemplateView
 
 urlpatterns = patterns('',
@@ -9,5 +9,6 @@ urlpatterns = patterns('',
 
 urlpatterns += patterns('',
     url(r'^onelang/', TemplateView.as_view(template_name="onelang.html"),
-        name='onelang')
+        name='onelang'),
+    (r'^i18n/', include('django.conf.urls.i18n')),
 )

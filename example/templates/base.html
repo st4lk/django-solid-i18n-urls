@@ -48,7 +48,7 @@
             <ul id="set_lang" class="nav pull-right">
                 {% if LANGUAGE_CODE == 'en' %}
                   <li>
-                    <form action="{% url 'set_language' %}" method="post">
+                    <form action="/i18n/setlang/" method="post">
                     {% csrf_token %}
                     <input name="next" type="hidden" value="{{request.get_full_path}}" />
                     <input name="language" type="hidden" value="en" />
@@ -56,7 +56,7 @@
                     </form>
                   </li>
                   <li>
-                    <form action="{% url 'set_language' %}" method="post">
+                    <form action="/i18n/setlang/" method="post">
                     {% csrf_token %}
                     <input name="next" type="hidden" value="/ru{{request.get_full_path}}" />
                     <input name="language" type="hidden" value="ru" />
@@ -65,7 +65,7 @@
                   </li>
                 {% else %}
                   <li>
-                    <form action="{% url 'set_language' %}" method="post">
+                    <form action="/i18n/setlang/" method="post">
                     {% csrf_token %}
                     <input name="next" type="hidden" value="{{request.get_full_path|slice:'3:'}}" />
                     <input name="language" type="hidden" value="en" />
@@ -74,7 +74,7 @@
                   </li>
 
                   <li>
-                    <form action="{% url 'set_language' %}" method="post">
+                    <form action="/i18n/setlang/" method="post">
                     {% csrf_token %}
                     <input name="next" type="hidden" value="{{request.get_full_path}}" />
                     <input name="language" type="hidden" value="ru" />
