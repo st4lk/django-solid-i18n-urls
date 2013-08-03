@@ -18,6 +18,17 @@
         color: #51a351 !important;
         font-weight:bold;
       }
+      #set_lang input[type="submit"] {
+        border: none;
+        background: none;
+        display: block;
+        color: #999;
+      }
+      #set_lang form {
+        padding: 10px;
+        margin: 0px;
+        height: 20px;
+      }
     </style>
   </head>
 
@@ -34,15 +45,44 @@
               <li><a href="{% url 'onelang' %}">{% trans "Link without i18n" %}</a></li>
             </ul>
             {% block lang_choose %}
-            <ul class="nav pull-right">
+            <ul id="set_lang" class="nav pull-right">
                 {% if LANGUAGE_CODE == 'en' %}
-                  <li><a class="lang_active" href="{{request.get_full_path}}" >EN</a></li>
-                  <li><a href="/ru{{request.get_full_path}}" >RU</a></li>
+                  <li>
+                    <form action="{% url 'set_language' %}" method="post">
+                    {% csrf_token %}
+                    <input name="next" type="hidden" value="{{request.get_full_path}}" />
+                    <input name="language" type="hidden" value="en" />
+                    <input type="submit" class="lang_active" value="EN" />
+                    </form>
+                  </li>
+                  <li>
+                    <form action="{% url 'set_language' %}" method="post">
+                    {% csrf_token %}
+                    <input name="next" type="hidden" value="/ru{{request.get_full_path}}" />
+                    <input name="language" type="hidden" value="ru" />
+                    <input type="submit" value="RU" />
+                    </form>
+                  </li>
                 {% else %}
-                  <li><a href="{{request.get_full_path|slice:'3:'}}" >EN</a></li>
-                  <li><a class="lang_active" href="{{request.get_full_path}}" >RU</a></li>
+                  <li>
+                    <form action="{% url 'set_language' %}" method="post">
+                    {% csrf_token %}
+                    <input name="next" type="hidden" value="{{request.get_full_path|slice:'3:'}}" />
+                    <input name="language" type="hidden" value="en" />
+                    <input type="submit" value="EN" />
+                    </form>
+                  </li>
+
+                  <li>
+                    <form action="{% url 'set_language' %}" method="post">
+                    {% csrf_token %}
+                    <input name="next" type="hidden" value="{{request.get_full_path}}" />
+                    <input name="language" type="hidden" value="ru" />
+                    <input type="submit" class="lang_active" value="RU" />
+                    </form>
+                  </li>
                 {% endif %}
-            </ul>
+              </ul>
             {% endblock lang_choose %}
           </div><!--/.nav-collapse -->
         </div>

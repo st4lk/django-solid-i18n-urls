@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import patterns, url, include
 from solid_i18n.urls import solid_i18n_patterns
 from django.views.generic import TemplateView
 
@@ -11,5 +11,6 @@ urlpatterns = solid_i18n_patterns('',
 # without i18n
 urlpatterns += patterns('',
     url(r'^onelang/', TemplateView.as_view(template_name="onelang.html"),
-        name='onelang')
+        name='onelang'),
+    url(r'^i18n/', include('django.conf.urls.i18n')),
 )
