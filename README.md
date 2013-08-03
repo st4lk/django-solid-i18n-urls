@@ -9,7 +9,7 @@ Default language is set in settings.LANGUAGE_CODE.
 
 There are two modes:
 
- 1. `settings.SOLID_I18N_USE_REDIRECTS` = False (default). In that case i18n
+ 1. `settings.SOLID_I18N_USE_REDIRECTS = False` (default). In that case i18n
  will not use redirects at all. If request doesn't have language prefix,
  then default language will be used. If request does have prefix, language
  from that prefix will be used.
@@ -93,6 +93,6 @@ step in  example/ and run development server:
     python manage.py runserver
 
 ## Notes
-- When using `SOLID_I18N_USE_REDIRECTS = True`, there is some nasty case. Suppose django has determined user preferred language incorrectly (maybe in user's browser preferred language is not equal to his realy preferred language, because for example it is not his computer) and it is Russian. Then on access to url without prefix, i.e. `'/'`, he will be redirected to `'/ru/'` (according to browsers prefered language). He wants to look english content (that is default language), but he can't, because he is always being redirected to `'/ru/'` from `'/'`. To avoid this, it is needed to set prefered language in his cookies (just `<a href="{{ specific language url}}">` will not work). For that purporse django's [set_language redirect view](https://docs.djangoproject.com/en/dev/topics/i18n/translation/#the-set-language-redirect-view) shall be used. See example in this package.
+- When using `SOLID_I18N_USE_REDIRECTS = True`, there is some nasty case. Suppose django has determined user preferred language incorrectly (maybe in user's browser preferred language is not equal to his realy preferred language, because for example it is not his computer) and it is Russian. Then on access to url without prefix, i.e. `'/'`, he will be redirected to `'/ru/'` (according to browsers preferred language). He wants to look english content (that is default language), but he can't, because he is always being redirected to `'/ru/'` from `'/'`. To avoid this, it is needed to set preferred language in his cookies (just `<a href="{{ specific language url}}">` will not work). For that purporse django's [set_language redirect view](https://docs.djangoproject.com/en/dev/topics/i18n/translation/#the-set-language-redirect-view) shall be used. See example in this package.
 
 - Of course, you must specify translation for all languages you've marked as supported. For details look here: [https://docs.djangoproject.com/en/dev/topics/i18n/translation/](https://docs.djangoproject.com/en/dev/topics/i18n/translation/).
