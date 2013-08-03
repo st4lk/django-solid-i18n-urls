@@ -1,32 +1,51 @@
 from django.conf import settings
 from django.core.urlresolvers import get_resolver
+from django.http import HttpResponseRedirect
 from django.utils.cache import patch_vary_headers
-from django.utils import translation
+from django.utils import translation as trans
 from urlresolvers import SolidLocaleRegexURLResolver
+from django.middleware.locale import LocaleMiddleware
 
 
-class SolidLocaleMiddleware(object):
+class SolidLocaleMiddleware(LocaleMiddleware):
     """
-    This is a modified copy of django LocaleMiddleware.
-    It doesn't use redirects at all.
-    Requests without language prefix treated as request with default language.
+    Request without language prefix will use default language.
+    Or, if settings.SOLID_I18N_USE_REDIRECTS is True, try to discover language.
+    If language is not equal to default language, redirect to discovered
+    language.
+
+    If request contains language prefix, this language will be used immediately.
+    In that case settings.SOLID_I18N_USE_REDIRECTS doesn't make sense.
+
     Default language is set in settings.LANGUAGE_CODE.
-    Request with non default language prefix treated similiar to
-    LocaleMiddleware.
     """
+    @property
+    def use_redirects(self):
+        return getattr(settings, 'SOLID_I18N_USE_REDIRECTS', False)
+
+    @property
+    def default_lang(self):
+        return settings.LANGUAGE_CODE
 
     def process_request(self, request):
-        if self.is_language_prefix_patterns_used():
-            language = translation.get_language_from_path(request.path_info)
-            language = language or settings.LANGUAGE_CODE
+        check_path = self.is_language_prefix_patterns_used()
+        if check_path and not self.use_redirects:
+            language = trans.get_language_from_path(request.path_info)
+            language = language or self.default_lang
         else:
-            language = translation.get_language_from_request(request)
-        translation.activate(language)
-        request.LANGUAGE_CODE = translation.get_language()
+            language = trans.get_language_from_request(request, check_path)
+        trans.activate(language)
+        request.LANGUAGE_CODE = trans.get_language()
 
     def process_response(self, request, response):
-        language = translation.get_language()
-        translation.deactivate()
+        language = trans.get_language()
+        if self.use_redirects:
+            rr_response = super(SolidLocaleMiddleware, self).process_response(request, response)
+            if rr_response and not(
+                    isinstance(rr_response, HttpResponseRedirect)
+                    and language == self.default_lang):
+                return rr_response
+        trans.deactivate()
 
         patch_vary_headers(response, ('Accept-Language',))
         if 'Content-Language' not in response:
