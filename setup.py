@@ -10,16 +10,16 @@ def __read(fname):
         return ''
 
 setup(
-    name='django-solid-i18n-urls',
+    name='solid_i18n',
     version=__version__,
     packages=find_packages(),
-    keywords='django, i18n, urls, solid, redirects',
+    keywords='django i18n urls solid redirects language default'.split(),
     include_package_data=True,
     license='BSD License',
     package_dir={'solid_i18n': 'solid_i18n'},
-    description='Django i18n middleware and url pattern without redirects',
+    description='Use default language for urls without language prefix',
     long_description=__read('README.rst'),
-    url='http://www.lexev.org/',
+    url='https://github.com/st4lk/django-solid-i18n-urls',
     author=__author__,
     author_email='alexevseev@gmail.com',
     classifiers=[
@@ -29,9 +29,6 @@ setup(
         'License :: OSI Approved :: BSD License',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2.6',
-        'Programming Language :: Python :: 2.7',
-        'Topic :: Internet :: WWW/HTTP',
-        'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
+        'Topic :: Utilities',
     ],
 )
