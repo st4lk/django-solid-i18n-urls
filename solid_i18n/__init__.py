@@ -1,2 +1,2 @@
-__author__ = 'stalk'
+__author__ = 'st4lk'
 __version__ = '0.2'
