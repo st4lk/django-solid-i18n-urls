@@ -4,3 +4,4 @@
 *.sublime-workspace
 activate_venv*.bat
 .tox/
+*.egg-info
