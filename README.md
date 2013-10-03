@@ -36,13 +36,7 @@ Quick start
 
 1. Install this package to your python distribution:
 
-        - pip install git+https://github.com/st4lk/django-solid-i18n-urls.git
-
-        or
-
-        - git clone https://github.com/st4lk/django-solid-i18n-urls
-        - cd django-solid-i18n-urls
-        - python setup.py install
+        - pip install solid_i18n
 
 2. Set languages in settings.py:
 
@@ -97,7 +91,7 @@ Example site
 
 Located [here](https://github.com/st4lk/django-solid-i18n-urls/tree/master/example), it is ready to use, just install solid_i18n (this package):
 
-    pip install git+https://github.com/st4lk/django-solid-i18n-urls.git
+    pip install solid_i18n
 
 clone example site:
 
