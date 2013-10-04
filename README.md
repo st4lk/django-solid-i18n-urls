@@ -36,7 +36,7 @@ Quick start
 
 1. Install this package to your python distribution:
 
-        - pip install solid_i18n
+        pip install solid_i18n
 
 2. Set languages in settings.py:
 

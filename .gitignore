@@ -5,3 +5,6 @@
 activate_venv*.bat
 .tox/
 *.egg-info
+dist/
+README.rst
+generate_rst.py

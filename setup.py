@@ -17,7 +17,7 @@ setup(
     author=__author__,
     author_email='alexevseev@gmail.com',
     version=__version__,
-    description='Use default language for urls without language prefix',
+    description='Use default language for urls without language prefix (django)',
     long_description=__read('README.rst'),
     platforms=('Any'),
     packages=find_packages(),
