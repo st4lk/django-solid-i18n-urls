@@ -12,7 +12,7 @@ Requirements
 -----------
 
 - python (2.6, 2.7)
-- django (1.4, 1.5)
+- django (1.4, 1.5, 1.6)
 
 
 Behaviour
