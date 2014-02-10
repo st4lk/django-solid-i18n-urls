@@ -6,8 +6,10 @@ python:
 env:
   - TOXENV=py26-14
   - TOXENV=py26-15
+  - TOXENV=py26-16
   - TOXENV=py27-14
   - TOXENV=py27-15
+  - TOXENV=py27-16
 
 
 branches:
@@ -20,7 +22,7 @@ install: pip install --quiet --use-mirrors tox
 script: tox
 
 after_script:
-    - if [ $TOXENV == "py27-15" ]; then
+    - if [ $TOXENV == "py27-16" ]; then
         pip install --quiet --use-mirrors coveralls;
         coveralls;
       fi
