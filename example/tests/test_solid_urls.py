@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 from django.core.urlresolvers import reverse
 from django.utils import translation
 from django.test.utils import override_settings
 
-from base import URLTestCaseBase
+from .base import URLTestCaseBase
 
 
 class TranslationReverseUrlTestCase(URLTestCaseBase):
@@ -40,7 +41,7 @@ class TranslationAccessTestCase(URLTestCaseBase):
 
     def _base_check_home_ru(self, response):
         self.assertEqual(response.status_code, 200)
-        self.assertTrue(u'Здравствуйте!' in response.content.decode('utf8'))
+        self.assertTrue('Здравствуйте!' in response.content.decode('utf8'))
         self.assertEqual(response.context['LANGUAGE_CODE'], 'ru')
 
     def _base_check_about_en(self, response):
@@ -49,7 +50,7 @@ class TranslationAccessTestCase(URLTestCaseBase):
 
     def _base_check_about_ru(self, response):
         self.assertEqual(response.status_code, 200)
-        self.assertTrue(u'Информация' in response.content.decode('utf8'))
+        self.assertTrue('Информация' in response.content.decode('utf8'))
         self.assertEqual(response.context['LANGUAGE_CODE'], 'ru')
 
     @property

@@ -2,7 +2,7 @@
 from django.core.urlresolvers import reverse
 from django.test.utils import override_settings
 
-from base import URLTestCaseBase
+from .base import URLTestCaseBase
 
 
 class Noni18nUrlsTestCase(URLTestCaseBase):

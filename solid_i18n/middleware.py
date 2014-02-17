@@ -7,7 +7,7 @@ from django.utils import translation as trans
 from django.middleware.locale import LocaleMiddleware
 from django.utils.datastructures import SortedDict
 from django.utils import translation
-from urlresolvers import SolidLocaleRegexURLResolver
+from .urlresolvers import SolidLocaleRegexURLResolver
 
 
 django_root_version = DJANGO_VERSION[0]*10 + DJANGO_VERSION[1]

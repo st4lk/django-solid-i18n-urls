@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.conf.urls import patterns
-from urlresolvers import SolidLocaleRegexURLResolver
+from .urlresolvers import SolidLocaleRegexURLResolver
 
 
 def solid_i18n_patterns(prefix, *args):
