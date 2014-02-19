@@ -14,6 +14,11 @@ Requirements
 - python (2.6, 2.7, 3.2, 3.3)
 - django (1.4, 1.5, 1.6)
 
+Release notes
+-------------
+
+[Here](https://github.com/st4lk/django-solid-i18n-urls/blob/master/RELEASE_NOTES.md)
+
 
 Behaviour
 -----------
