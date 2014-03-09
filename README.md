@@ -73,16 +73,6 @@ Quick start
         from django.conf.urls import patterns, include, url
         from solid_i18n.urls import solid_i18n_patterns
 
-        urlpatterns = patterns(''
-            url(r'^sitemap\.xml$', 'sitemap.view', name='sitemap_xml'),
-        )
-
-        news_patterns = patterns(''
-            url(r'^$', 'news.views.index', name='index'),
-            url(r'^category/(?P<slug>[\w-]+)/$', 'news.views.category', name='category'),
-            url(r'^(?P<slug>[\w-]+)/$', 'news.views.details', name='detail'),
-        )
-
         urlpatterns += solid_i18n_patterns('',
             url(r'^about/$', 'about.view', name='about'),
             url(r'^news/', include(news_patterns, namespace='news')),
