@@ -8,3 +8,5 @@ activate_venv*.bat
 dist/
 README.rst
 generate_rst.py
+build/
+.coverage
