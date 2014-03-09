@@ -73,7 +73,7 @@ Quick start
         from django.conf.urls import patterns, include, url
         from solid_i18n.urls import solid_i18n_patterns
 
-        urlpatterns += solid_i18n_patterns('',
+        urlpatterns = solid_i18n_patterns('',
             url(r'^about/$', 'about.view', name='about'),
             url(r'^news/', include(news_patterns, namespace='news')),
         )
