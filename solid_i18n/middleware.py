@@ -2,15 +2,32 @@ from django import VERSION as DJANGO_VERSION
 from django.conf import settings
 from django.core.urlresolvers import get_resolver
 from django.http import HttpResponseRedirect
-from django.utils.cache import patch_vary_headers
+from django.utils.cache import cc_delim_re
 from django.utils import translation as trans
 from django.middleware.locale import LocaleMiddleware
 from django.utils.datastructures import SortedDict
-from django.utils import translation
 from .urlresolvers import SolidLocaleRegexURLResolver
 
 
 django_root_version = DJANGO_VERSION[0]*10 + DJANGO_VERSION[1]
+
+
+def unpatch_vary_headers(response, removeheaders):
+    """
+    Removes specified entries from the "Vary" header in the given
+    HttpResponse object. Other existing headers in "Vary" aren't removed.
+    """
+    # Note that we need to keep the original order intact, because cache
+    # implementations may rely on the order of the Vary contents in, say,
+    # computing an MD5 hash.
+    if response.has_header('Vary'):
+        vary_headers = cc_delim_re.split(response['Vary'])
+    else:
+        vary_headers = []
+    removeheaders_lower = [h.lower() for h in removeheaders]
+    updated_headers = [header for header in vary_headers
+                       if header.lower() not in removeheaders_lower]
+    response['Vary'] = ', '.join(updated_headers)
 
 
 class SolidLocaleMiddleware(LocaleMiddleware):
@@ -54,22 +71,16 @@ class SolidLocaleMiddleware(LocaleMiddleware):
 
     def process_response(self, request, response):
         language = trans.get_language()
-        kwargs = {}
         if self.use_redirects:
             rr_response = super(SolidLocaleMiddleware, self).\
                 process_response(request, response)
-            if rr_response and not(
-                    isinstance(rr_response, HttpResponseRedirect)
-                    and language == self.default_lang):
-                return rr_response
-
-        if django_root_version >= 16:
-            kwargs["supported"] = self._supported_languages
-        language_from_path = translation.get_language_from_path(
-            request.path_info, **kwargs)
-        if not (self.is_language_prefix_patterns_used()
-                and language_from_path):
-            patch_vary_headers(response, ('Accept-Language',))
+            if rr_response:
+                if not isinstance(rr_response, HttpResponseRedirect):
+                    if django_root_version < 16 and language != self.default_lang:
+                        unpatch_vary_headers(rr_response, ("Accept-Language", ))
+                    return rr_response
+                elif language != self.default_lang:
+                    return rr_response
         if 'Content-Language' not in response:
             response['Content-Language'] = language
         return response

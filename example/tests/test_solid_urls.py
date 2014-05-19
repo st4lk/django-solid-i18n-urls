@@ -36,20 +36,33 @@ class TranslationReverseUrlTestCase(URLTestCaseBase):
 class TranslationAccessTestCase(URLTestCaseBase):
     PAGE_DATA = {
         "ru": {
-            "home": u'Здравствуйте!',
-            "about": u'Информация',
+            "home": 'Здравствуйте!',
+            "about": 'Информация',
         },
         "en": {
-            "home": u'Hello!',
-            "about": u'Information',
+            "home": 'Hello!',
+            "about": 'Information',
         }
     }
+
+    def _check_vary_accept_language(self, response):
+        from django.conf import settings
+        vary = response._headers.get('vary', ('', ''))[-1]
+        if settings.SOLID_I18N_USE_REDIRECTS:
+            req_path = response.request['PATH_INFO']
+            if req_path.startswith('/en') or req_path.startswith('/ru'):
+                self.assertFalse('Accept-Language' in vary)
+            else:
+                self.assertTrue('Accept-Language' in vary)
+        else:
+            self.assertFalse('Accept-Language' in vary)
 
     def _base_page_check(self, response, lang_code, page_code):
         self.assertEqual(response.status_code, 200)
         content = self.PAGE_DATA[lang_code][page_code]
         self.assertTrue(content in response.content.decode('utf8'))
         self.assertEqual(response.context['LANGUAGE_CODE'], lang_code)
+        self._check_vary_accept_language(response)
 
     @property
     def en_http_headers(self):
