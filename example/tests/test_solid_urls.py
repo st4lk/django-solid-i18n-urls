@@ -34,24 +34,22 @@ class TranslationReverseUrlTestCase(URLTestCaseBase):
 
 
 class TranslationAccessTestCase(URLTestCaseBase):
+    PAGE_DATA = {
+        "ru": {
+            "home": u'Здравствуйте!',
+            "about": u'Информация',
+        },
+        "en": {
+            "home": u'Hello!',
+            "about": u'Information',
+        }
+    }
 
-    def _base_check_home_en(self, response):
-        self.assertContains(response, 'Hello!')
-        self.assertEqual(response.context['LANGUAGE_CODE'], 'en')
-
-    def _base_check_home_ru(self, response):
+    def _base_page_check(self, response, lang_code, page_code):
         self.assertEqual(response.status_code, 200)
-        self.assertTrue('Здравствуйте!' in response.content.decode('utf8'))
-        self.assertEqual(response.context['LANGUAGE_CODE'], 'ru')
-
-    def _base_check_about_en(self, response):
-        self.assertContains(response, 'Information')
-        self.assertEqual(response.context['LANGUAGE_CODE'], 'en')
-
-    def _base_check_about_ru(self, response):
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue('Информация' in response.content.decode('utf8'))
-        self.assertEqual(response.context['LANGUAGE_CODE'], 'ru')
+        content = self.PAGE_DATA[lang_code][page_code]
+        self.assertTrue(content in response.content.decode('utf8'))
+        self.assertEqual(response.context['LANGUAGE_CODE'], lang_code)
 
     @property
     def en_http_headers(self):
@@ -66,27 +64,27 @@ class TranslationAccessTestCase(URLTestCaseBase):
     def test_home_page_en(self):
         with translation.override('en'):
             response = self.client.get(reverse('home'))
-            self._base_check_home_en(response)
+            self._base_page_check(response, "en", "home")
 
     def test_home_page_ru(self):
         with translation.override('ru'):
             response = self.client.get(reverse('home'))
-            self._base_check_home_ru(response)
+            self._base_page_check(response, 'ru', "home")
 
     def test_about_page_en(self):
         with translation.override('en'):
             response = self.client.get(reverse('about'))
-            self._base_check_about_en(response)
+            self._base_page_check(response, "en", "about")
 
     def test_about_page_ru(self):
         with translation.override('ru'):
             response = self.client.get(reverse('about'))
-            self._base_check_about_ru(response)
+            self._base_page_check(response, "ru", "about")
 
     @override_settings(SOLID_I18N_USE_REDIRECTS=True)
     def test_home_page_redirects_default_lang(self):
         response = self.client.get('/', **self.en_http_headers)
-        self._base_check_home_en(response)
+        self._base_page_check(response, "en", "home")
 
     @override_settings(SOLID_I18N_USE_REDIRECTS=True)
     def test_home_page_redirects_non_default_lang(self):
@@ -94,12 +92,12 @@ class TranslationAccessTestCase(URLTestCaseBase):
         self.assertEqual(response.status_code, 302)
         self.assertTrue('/ru/' in response['Location'])
         response = self.client.get(response['Location'], **self.ru_http_headers)
-        self._base_check_home_ru(response)
+        self._base_page_check(response, 'ru', "home")
 
     @override_settings(SOLID_I18N_USE_REDIRECTS=True)
     def test_about_page_redirects_default_lang(self):
         response = self.client.get('/about/', **self.en_http_headers)
-        self._base_check_about_en(response)
+        self._base_page_check(response, "en", "about")
 
     @override_settings(SOLID_I18N_USE_REDIRECTS=True)
     def test_about_page_redirects_non_default_lang(self):
@@ -107,4 +105,4 @@ class TranslationAccessTestCase(URLTestCaseBase):
         self.assertEqual(response.status_code, 302)
         self.assertTrue('/ru/about/' in response['Location'])
         response = self.client.get(response['Location'], **self.ru_http_headers)
-        self._base_check_about_ru(response)
+        self._base_page_check(response, "ru", "about")
