@@ -63,6 +63,9 @@ class TranslationAccessTestCase(URLTestCaseBase):
         self.assertTrue(content in response.content.decode('utf8'))
         self.assertEqual(response.context['LANGUAGE_CODE'], lang_code)
         self._check_vary_accept_language(response)
+        # content-language
+        content_lang = response._headers.get('content-language', ('', ''))[-1]
+        self.assertEqual(content_lang, lang_code)
 
     @property
     def en_http_headers(self):
