@@ -1,6 +1,13 @@
 solid_i18n release notes
 ========================
 
+v0.4.3
+------
+
+ - fix http header 'Vary Accept-Language'
+
+Issues: [#4](https://github.com/st4lk/django-solid-i18n-urls/issues/4)
+
 v0.4.2
 ------
 
