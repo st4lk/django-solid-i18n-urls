@@ -56,7 +56,7 @@ class SolidLocaleMiddleware(LocaleMiddleware):
         language = translation.get_language()
         if self.use_redirects:
             kwargs = {}
-            if django_root_version >= 16:
+            if django_root_version == 16:
                 kwargs['supported'] = self._supported_languages
             language_from_path = translation.get_language_from_path(
                 request.path_info, **kwargs)
