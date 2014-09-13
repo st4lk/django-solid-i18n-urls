@@ -25,6 +25,7 @@ class SolidLocaleMiddleware(LocaleMiddleware):
 
     Default language is set in settings.LANGUAGE_CODE.
     """
+    response_redirect_class = HttpResponseRedirect
 
     def __init__(self):
         self._supported_languages = SortedDict(settings.LANGUAGES)
@@ -74,7 +75,7 @@ class SolidLocaleMiddleware(LocaleMiddleware):
                     language_url = "%s://%s/%s%s" % (
                         'https' if request.is_secure() else 'http',
                         request.get_host(), language, request.get_full_path())
-                    return HttpResponseRedirect(language_url)
+                    return self.response_redirect_class(language_url)
 
             if not (self.is_language_prefix_patterns_used()
                     and language_from_path):
