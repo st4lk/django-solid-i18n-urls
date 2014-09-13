@@ -5,7 +5,6 @@ from django.http import HttpResponseRedirect
 from django.utils.cache import patch_vary_headers
 from django.utils import translation as trans
 from django.middleware.locale import LocaleMiddleware
-from django.utils.datastructures import SortedDict
 from django.utils import translation
 from .urlresolvers import SolidLocaleRegexURLResolver
 
@@ -28,7 +27,6 @@ class SolidLocaleMiddleware(LocaleMiddleware):
     response_redirect_class = HttpResponseRedirect
 
     def __init__(self):
-        self._supported_languages = SortedDict(settings.LANGUAGES)
         self._is_language_prefix_patterns_used = False
         for url_pattern in get_resolver(None).url_patterns:
             if isinstance(url_pattern, SolidLocaleRegexURLResolver):
@@ -56,11 +54,8 @@ class SolidLocaleMiddleware(LocaleMiddleware):
     def process_response(self, request, response):
         language = translation.get_language()
         if self.use_redirects:
-            kwargs = {}
-            if django_root_version >= 16:
-                kwargs['supported'] = self._supported_languages
             language_from_path = translation.get_language_from_path(
-                request.path_info, **kwargs)
+                request.path_info)
             if (response.status_code == 404 and not language_from_path
                     and self.is_language_prefix_patterns_used()
                     and language != self.default_lang):
