@@ -72,9 +72,13 @@ class SolidLocaleMiddleware(LocaleMiddleware):
                     path_valid = is_valid_path("%s/" % language_path, urlconf)
 
                 if path_valid:
+                    if django_root_version >= 17:
+                        scheme = request.scheme
+                    else:
+                        scheme = 'https' if request.is_secure() else 'http'
                     language_url = "%s://%s/%s%s" % (
-                        'https' if request.is_secure() else 'http',
-                        request.get_host(), language, request.get_full_path())
+                        scheme, request.get_host(), language,
+                        request.get_full_path())
                     return self.response_redirect_class(language_url)
 
             if not (self.is_language_prefix_patterns_used()
