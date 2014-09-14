@@ -1,6 +1,14 @@
 solid_i18n release notes
 ========================
 
+v0.5.1
+------
+
+ - add django 1.7 support
+ - add python 3.4 support
+
+Issues: [#6](https://github.com/st4lk/django-solid-i18n-urls/issues/6)
+
 v0.4.3
 ------
 

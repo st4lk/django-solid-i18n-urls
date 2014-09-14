@@ -11,8 +11,8 @@ Default language is set in settings.LANGUAGE_CODE.
 Requirements
 -----------
 
-- python (2.6, 2.7, 3.2, 3.3)
-- django (1.4, 1.5, 1.6)
+- python (2.6, 2.7, 3.2, 3.3, 3.4)
+- django (1.4, 1.5, 1.6, 1.7)
 
 Release notes
 -------------
