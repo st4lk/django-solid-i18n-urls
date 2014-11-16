@@ -1,10 +1,34 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+import sys
 from django.core.urlresolvers import reverse
+from django.conf.urls import url
 from django.utils import translation
 from django.test.utils import override_settings
+from django.views.generic import TemplateView
+from solid_i18n.urls import solid_i18n_patterns
 
 from .base import URLTestCaseBase
+
+
+class PrefixDeprecationTestCase(URLTestCaseBase):
+
+    def setUp(self):
+        super(PrefixDeprecationTestCase, self).setUp()
+        self.test_urls = [
+            url(r'^$', TemplateView.as_view(template_name="test.html"), name='test'),
+            url(r'^$', TemplateView.as_view(template_name="test2.html"), name='test2'),
+        ]
+
+    def test_with_and_without_prefix(self):
+        """
+        Ensure that solid_i18n_patterns works the same with or without a prefix.
+
+        """
+        self.assertEqual(
+            solid_i18n_patterns(*self.test_urls)[0].regex,
+            solid_i18n_patterns('', *self.test_urls)[0].regex,
+        )
 
 
 class TranslationReverseUrlTestCase(URLTestCaseBase):
