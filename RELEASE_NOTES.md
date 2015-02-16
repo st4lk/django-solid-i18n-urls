@@ -1,6 +1,13 @@
 solid_i18n release notes
 ========================
 
+v0.6.1
+------
+
+ - handle urls with default language prefix explicitly set
+
+Issues: [#10](https://github.com/st4lk/django-solid-i18n-urls/issues/10)
+
 v0.5.1
 ------
 
