@@ -78,7 +78,7 @@ Quick start
             url(r'^news/', include(news_patterns, namespace='news')),
         )
 
-5. Start the development server and visit http://127.0.0.1:8000/about/ to see English content. Visit http://127.0.0.1:8000/ru/about/ to see Russian content. If `SOLID_I18N_USE_REDIRECTS` was set to `True` and if your preferred language is equal to Russian, request to path http://127.0.0.1:8000/about/ will be redirected to http://127.0.0.1:8000/ru/about/. But if preferred language is English, http://127.0.0.1:8000/about/ will be shown.
+5. Start the development server and visit http://127.0.0.1:8000/about/ to see english content. Visit http://127.0.0.1:8000/ru/about/ to see russian content. If `SOLID_I18N_USE_REDIRECTS` was set to `True` and if your preferred language is equal to Russian, request to path http://127.0.0.1:8000/about/ will be redirected to http://127.0.0.1:8000/ru/about/. But if preferred language is English, http://127.0.0.1:8000/about/ will be shown. Note that url http://127.0.0.1:8000/en/about/ will always show english content, no matter what settings are set and what preferred language is.
 
 
 Example site

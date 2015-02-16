@@ -23,6 +23,6 @@ class SolidLocaleRegexURLResolver(LocaleRegexURLResolver):
             if language_code != settings.LANGUAGE_CODE:
                 regex_compiled = re.compile('^%s/' % language_code, re.UNICODE)
             else:
-                regex_compiled = re.compile('')
+                regex_compiled = re.compile('(?:^%s/)?' % language_code, re.UNICODE)
             self._regex_dict[language_code] = regex_compiled
         return self._regex_dict[language_code]

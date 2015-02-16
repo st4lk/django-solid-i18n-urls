@@ -97,6 +97,24 @@ class TranslationAccessTestCase(URLTestCaseBase):
             response = self.client.get(reverse('about'))
             self._base_page_check(response, "ru", "about")
 
+    def test_home_page_default_prefix_en(self):
+        """
+        Check, that url with explicit default language prefix is still
+        accessible.
+        """
+        with translation.override('en'):
+            response = self.client.get('/en/')
+            self._base_page_check(response, "en", "home")
+
+    def test_home_page_default_prefix_ru(self):
+        """
+        Check, that language is got from url prefix, even this laguage is
+        not equal to client preferred langauge.
+        """
+        with translation.override('ru'):
+            response = self.client.get('/en/')
+            self._base_page_check(response, "en", "home")
+
     @override_settings(SOLID_I18N_USE_REDIRECTS=True)
     def test_home_page_redirects_default_lang(self):
         response = self.client.get('/', **self.en_http_headers)
@@ -122,3 +140,13 @@ class TranslationAccessTestCase(URLTestCaseBase):
         self.assertTrue('/ru/about/' in response['Location'])
         response = self.client.get(response['Location'], **self.ru_http_headers)
         self._base_page_check(response, "ru", "about")
+
+    @override_settings(SOLID_I18N_USE_REDIRECTS=True)
+    def test_home_page_prefix_default_prefix_en(self):
+        response = self.client.get('/en/', **self.en_http_headers)
+        self._base_page_check(response, "en", "home")
+
+    @override_settings(SOLID_I18N_USE_REDIRECTS=True)
+    def test_home_page_prefix_default_prefix_ru(self):
+        response = self.client.get('/en/', **self.ru_http_headers)
+        self._base_page_check(response, "en", "home")
