@@ -1,6 +1,13 @@
 solid_i18n release notes
 ========================
 
+v0.7.1
+------
+
+ - add settings `SOLID_I18N_HANDLE_DEFAULT_PREFIX` and `SOLID_I18N_DEFAULT_PREFIX_REDIRECT`
+
+Issues: [#12](https://github.com/st4lk/django-solid-i18n-urls/issues/12)
+
 v0.6.1
 ------
 

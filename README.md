@@ -87,11 +87,11 @@ Settings
 If `True`, redirect to url with non-default language prefix from url without prefix, if user's language is not equal to default. Otherwise url without language prefix will always render default language content (see [behaviour section](#behaviour) and [notes](#notes) for details).
 
 - `SOLID_I18N_HANDLE_DEFAULT_PREFIX = False`    
-If `True`, both urls `/...` and `/en/...` will render default language content (in this example en is default language).
+If `True`, both urls `/...` and `/en/...` will render default language content (in this example 'en' is default language).
 Otherwise, `/en/...` will return 404 status_code.
 
 - `SOLID_I18N_DEFAULT_PREFIX_REDIRECT = False`    
-If `True`, redirect from url with default language prefix to url without any prefix, i.e. redirect from `/en/...` to `/...` if en is default language.
+If `True`, redirect from url with default language prefix to url without any prefix, i.e. redirect from `/en/...` to `/...` if 'en' is default language.
 
 
 Example site
