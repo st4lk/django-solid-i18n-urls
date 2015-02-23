@@ -21,8 +21,10 @@ class SolidLocaleRegexURLResolver(LocaleRegexURLResolver):
         language_code = get_language()
         if language_code not in self._regex_dict:
             if language_code != settings.LANGUAGE_CODE:
-                regex_compiled = re.compile('^%s/' % language_code, re.UNICODE)
+                regex = '^%s/' % language_code
+            elif getattr(settings, 'SOLID_I18N_HANDLE_DEFAULT_PREFIX', False):
+                regex = '(?:^%s/)?' % language_code
             else:
-                regex_compiled = re.compile('(?:^%s/)?' % language_code, re.UNICODE)
-            self._regex_dict[language_code] = regex_compiled
+                regex = ''
+            self._regex_dict[language_code] = re.compile(regex, re.UNICODE)
         return self._regex_dict[language_code]

@@ -97,6 +97,19 @@ class TranslationAccessTestCase(URLTestCaseBase):
             response = self.client.get(reverse('about'))
             self._base_page_check(response, "ru", "about")
 
+    def test_home_page_default_prefix_en_404(self):
+        with translation.override('en'):
+            response = self.client.get('/en/')
+            self.assertEqual(response.status_code, 404)
+
+    def test_home_page_default_prefix_ru_404(self):
+        with translation.override('ru'):
+            response = self.client.get('/en/')
+            self.assertEqual(response.status_code, 404)
+
+    # settings
+
+    @override_settings(SOLID_I18N_HANDLE_DEFAULT_PREFIX=True)
     def test_home_page_default_prefix_en(self):
         """
         Check, that url with explicit default language prefix is still
@@ -106,6 +119,7 @@ class TranslationAccessTestCase(URLTestCaseBase):
             response = self.client.get('/en/')
             self._base_page_check(response, "en", "home")
 
+    @override_settings(SOLID_I18N_HANDLE_DEFAULT_PREFIX=True)
     def test_home_page_default_prefix_ru(self):
         """
         Check, that language is got from url prefix, even this laguage is
@@ -114,6 +128,46 @@ class TranslationAccessTestCase(URLTestCaseBase):
         with translation.override('ru'):
             response = self.client.get('/en/')
             self._base_page_check(response, "en", "home")
+
+    @override_settings(SOLID_I18N_DEFAULT_PREFIX_REDIRECT=True)
+    def test_home_page_default_prefix_en_redirect(self):
+        with translation.override('en'):
+            response = self.client.get('/en/')
+            self.assertEqual(response.status_code, 302)
+            self.assertTrue('/en/' not in response['Location'])
+            response = self.client.get(response['Location'])
+            self._base_page_check(response, "en", "home")
+
+    @override_settings(SOLID_I18N_DEFAULT_PREFIX_REDIRECT=True)
+    def test_home_page_default_prefix_ru_redirect(self):
+        with translation.override('ru'):
+            response = self.client.get('/en/')
+            self.assertEqual(response.status_code, 302)
+            self.assertTrue('/en/' not in response['Location'])
+            response = self.client.get(response['Location'])
+            self._base_page_check(response, "en", "home")
+
+    @override_settings(SOLID_I18N_HANDLE_DEFAULT_PREFIX=True)
+    @override_settings(SOLID_I18N_DEFAULT_PREFIX_REDIRECT=True)
+    def test_home_page_default_prefix_en_redirect_handle(self):
+        with translation.override('en'):
+            response = self.client.get('/en/')
+            self.assertEqual(response.status_code, 302)
+            self.assertTrue('/en/' not in response['Location'])
+            response = self.client.get(response['Location'])
+            self._base_page_check(response, "en", "home")
+
+    @override_settings(SOLID_I18N_HANDLE_DEFAULT_PREFIX=True)
+    @override_settings(SOLID_I18N_DEFAULT_PREFIX_REDIRECT=True)
+    def test_home_page_default_prefix_ru_redirect_handle(self):
+        with translation.override('ru'):
+            response = self.client.get('/en/')
+            self.assertEqual(response.status_code, 302)
+            self.assertTrue('/en/' not in response['Location'])
+            response = self.client.get(response['Location'])
+            self._base_page_check(response, "en", "home")
+
+    # # use redirects
 
     @override_settings(SOLID_I18N_USE_REDIRECTS=True)
     def test_home_page_redirects_default_lang(self):
@@ -142,11 +196,63 @@ class TranslationAccessTestCase(URLTestCaseBase):
         self._base_page_check(response, "ru", "about")
 
     @override_settings(SOLID_I18N_USE_REDIRECTS=True)
+    def test_home_page_prefix_default_prefix_en_404(self):
+        response = self.client.get('/en/', **self.en_http_headers)
+        self.assertEqual(response.status_code, 404)
+
+    @override_settings(SOLID_I18N_USE_REDIRECTS=True)
+    def test_home_page_prefix_default_prefix_ru_404(self):
+        response = self.client.get('/en/', **self.ru_http_headers)
+        self.assertEqual(response.status_code, 404)
+
+    # # settings
+
+    @override_settings(SOLID_I18N_USE_REDIRECTS=True)
+    @override_settings(SOLID_I18N_HANDLE_DEFAULT_PREFIX=True)
     def test_home_page_prefix_default_prefix_en(self):
         response = self.client.get('/en/', **self.en_http_headers)
         self._base_page_check(response, "en", "home")
 
     @override_settings(SOLID_I18N_USE_REDIRECTS=True)
+    @override_settings(SOLID_I18N_HANDLE_DEFAULT_PREFIX=True)
     def test_home_page_prefix_default_prefix_ru(self):
         response = self.client.get('/en/', **self.ru_http_headers)
         self._base_page_check(response, "en", "home")
+
+    @override_settings(SOLID_I18N_USE_REDIRECTS=True)
+    @override_settings(SOLID_I18N_DEFAULT_PREFIX_REDIRECT=True)
+    def test_home_page_prefix_default_prefix_en_redirect(self):
+        response = self.client.get('/en/about/', **self.en_http_headers)
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue('/about/' in response['Location'])
+        self.assertFalse('/en/about/' in response['Location'])
+        self.assertFalse('/ru/about/' in response['Location'])
+
+    @override_settings(SOLID_I18N_USE_REDIRECTS=True)
+    @override_settings(SOLID_I18N_DEFAULT_PREFIX_REDIRECT=True)
+    def test_home_page_prefix_default_prefix_ru_redirect(self):
+        response = self.client.get('/en/about/', **self.ru_http_headers)
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue('/about/' in response['Location'])
+        self.assertFalse('/en/about/' in response['Location'])
+        self.assertFalse('/ru/about/' in response['Location'])
+
+    @override_settings(SOLID_I18N_USE_REDIRECTS=True)
+    @override_settings(SOLID_I18N_HANDLE_DEFAULT_PREFIX=True)
+    @override_settings(SOLID_I18N_DEFAULT_PREFIX_REDIRECT=True)
+    def test_home_page_prefix_default_prefix_en_redirect_handle(self):
+        response = self.client.get('/en/about/', **self.en_http_headers)
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue('/about/' in response['Location'])
+        self.assertFalse('/en/about/' in response['Location'])
+        self.assertFalse('/ru/about/' in response['Location'])
+
+    @override_settings(SOLID_I18N_USE_REDIRECTS=True)
+    @override_settings(SOLID_I18N_HANDLE_DEFAULT_PREFIX=True)
+    @override_settings(SOLID_I18N_DEFAULT_PREFIX_REDIRECT=True)
+    def test_home_page_prefix_default_prefix_ru_redirect_handle(self):
+        response = self.client.get('/en/about/', **self.ru_http_headers)
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue('/about/' in response['Location'])
+        self.assertFalse('/en/about/' in response['Location'])
+        self.assertFalse('/ru/about/' in response['Location'])

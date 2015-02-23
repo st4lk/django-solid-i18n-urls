@@ -4,12 +4,12 @@ from django.core.urlresolvers import get_resolver, is_valid_path
 from django.http import HttpResponseRedirect
 from django.utils.cache import patch_vary_headers
 from django.utils import translation as trans
+from django.utils.translation.trans_real import language_code_prefix_re
 from django.middleware.locale import LocaleMiddleware
-from django.utils import translation
 from .urlresolvers import SolidLocaleRegexURLResolver
 
 
-django_root_version = DJANGO_VERSION[0]*10 + DJANGO_VERSION[1]
+django_root_version = DJANGO_VERSION[0] * 10 + DJANGO_VERSION[1]
 
 
 class SolidLocaleMiddleware(LocaleMiddleware):
@@ -52,38 +52,63 @@ class SolidLocaleMiddleware(LocaleMiddleware):
         request.LANGUAGE_CODE = trans.get_language()
 
     def process_response(self, request, response):
-        language = translation.get_language()
-        if self.use_redirects:
-            language_from_path = translation.get_language_from_path(
-                request.path_info)
+        language = trans.get_language()
+        language_from_path = trans.get_language_from_path(request.path_info)
+        if (getattr(settings, 'SOLID_I18N_DEFAULT_PREFIX_REDIRECT', False)
+                and language_from_path == self.default_lang
+                and self.is_language_prefix_patterns_used()):
+            redirect = self.perform_redirect(request, '')
+            if redirect:
+                return redirect
+        elif self.use_redirects:
             if (response.status_code == 404 and not language_from_path
                     and self.is_language_prefix_patterns_used()
                     and language != self.default_lang):
-                urlconf = getattr(request, 'urlconf', None)
-                language_path = '/%s%s' % (language, request.path_info)
-                path_valid = is_valid_path(language_path, urlconf)
-                if (not path_valid and settings.APPEND_SLASH
-                        and not language_path.endswith('/')):
-                    path_valid = is_valid_path("%s/" % language_path, urlconf)
-
-                if path_valid:
-                    if django_root_version >= 17:
-                        scheme = request.scheme
-                    else:
-                        scheme = 'https' if request.is_secure() else 'http'
-                    language_url = "%s://%s/%s%s" % (
-                        scheme, request.get_host(), language,
-                        request.get_full_path())
-                    return self.response_redirect_class(language_url)
-
+                redirect = self.perform_redirect(request, language)
+                if redirect:
+                    return redirect
             if not (self.is_language_prefix_patterns_used()
                     and language_from_path):
                 patch_vary_headers(response, ('Accept-Language',))
             if django_root_version < 16:
-                translation.deactivate()
+                trans.deactivate()
         if 'Content-Language' not in response:
             response['Content-Language'] = language
         return response
+
+    def remove_lang_from_path(self, path):
+        no_lang_tag_path = path
+        regex_match = language_code_prefix_re.match(path)
+        if regex_match:
+            lang_code = regex_match.group(1)
+            no_lang_tag_path = path[1 + len(lang_code):]
+            if not no_lang_tag_path.startswith('/'):
+                no_lang_tag_path = '/' + no_lang_tag_path
+        return no_lang_tag_path
+
+    def perform_redirect(self, request, language):
+        path_info = request.path_info
+        full_path = request.get_full_path()
+        if language:
+            language = '/%s' % language
+        else:
+            path_info = self.remove_lang_from_path(path_info)
+            full_path = self.remove_lang_from_path(full_path)
+        urlconf = getattr(request, 'urlconf', None)
+        language_path = '%s%s' % (language, path_info)
+        path_valid = is_valid_path(language_path, urlconf)
+        if (not path_valid and settings.APPEND_SLASH
+                and not language_path.endswith('/')):
+            path_valid = is_valid_path("%s/" % language_path, urlconf)
+
+        if path_valid:
+            if django_root_version >= 17:
+                scheme = request.scheme
+            else:
+                scheme = 'https' if request.is_secure() else 'http'
+            language_url = "%s://%s%s%s" % (
+                scheme, request.get_host(), language, full_path)
+            return self.response_redirect_class(language_url)
 
     def is_language_prefix_patterns_used(self):
         """
