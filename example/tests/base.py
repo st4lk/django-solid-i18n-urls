@@ -12,7 +12,10 @@ except ImportError:
 try:
     from importlib import reload  # builtin reload deprecated since version 3.4
 except ImportError:
-    pass
+    try:
+        from imp import reload
+    except ImportError:
+        pass
 
 
 def reload_urlconf(urlconf=None, urls_attr='urlpatterns'):
