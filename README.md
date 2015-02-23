@@ -80,6 +80,19 @@ Quick start
 
 5. Start the development server and visit http://127.0.0.1:8000/about/ to see english content. Visit http://127.0.0.1:8000/ru/about/ to see russian content. If `SOLID_I18N_USE_REDIRECTS` was set to `True` and if your preferred language is equal to Russian, request to path http://127.0.0.1:8000/about/ will be redirected to http://127.0.0.1:8000/ru/about/. But if preferred language is English, http://127.0.0.1:8000/about/ will be shown. Note that url http://127.0.0.1:8000/en/about/ will always show english content, no matter what settings are set and what preferred language is.
 
+Settings
+--------
+
+- `SOLID_I18N_USE_REDIRECTS = False`
+If `True`, do redirect to non-default language url (see [behaviour section](#behaviour) for details).
+
+- `SOLID_I18N_HANDLE_DEFAULT_PREFIX = False`
+If `True`, both urls `/` and `/en/` will render default language (in this example en is default language).
+Otherwise, `/en/` will return 404 status_code.
+
+- `SOLID_I18N_DEFAULT_PREFIX_REDIRECT = False`
+If `True`, do redirect from url with default language prefix to url without any prefix, i.e. redirect from `/en/` to `/` if en is default language.
+
 
 Example site
 -----------
