@@ -7,6 +7,7 @@ from django.utils import translation as trans
 from django.utils.translation.trans_real import language_code_prefix_re
 from django.middleware.locale import LocaleMiddleware
 from .urlresolvers import SolidLocaleRegexURLResolver
+from .memory import set_language_from_path
 
 
 django_root_version = DJANGO_VERSION[0] * 10 + DJANGO_VERSION[1]
@@ -44,10 +45,12 @@ class SolidLocaleMiddleware(LocaleMiddleware):
     def process_request(self, request):
         check_path = self.is_language_prefix_patterns_used()
         if check_path and not self.use_redirects:
-            language = trans.get_language_from_path(request.path_info)
-            language = language or self.default_lang
+            language_path = trans.get_language_from_path(request.path_info)
+            language = language_path or self.default_lang
         else:
-            language = trans.get_language_from_request(request, check_path)
+            language_path = trans.get_language_from_request(request, check_path)
+            language = language_path
+        set_language_from_path(language_path)
         trans.activate(language)
         request.LANGUAGE_CODE = trans.get_language()
 
