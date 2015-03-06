@@ -114,22 +114,22 @@ class TranslationAccessTestCase(URLTestCaseBase):
         with translation.override('en'):
             response = self.client.get('/en/about/')
             self._base_page_check(response, "en", "about")
-            self.assertTrue('<test>/en/about/</test>' in response.content)
+            self.assertTrue('<test>/en/about/</test>' in str(response.content))
 
             response = self.client.get('/about/')
             self._base_page_check(response, "en", "about")
-            self.assertTrue('<test>/about/</test>' in response.content)
+            self.assertTrue('<test>/about/</test>' in str(response.content))
 
     @override_settings(SOLID_I18N_HANDLE_DEFAULT_PREFIX=True)
     def test_about_page_default_prefix_ru(self):
         with translation.override('ru'):
             response = self.client.get('/en/about/')
             self._base_page_check(response, "en", "about")
-            self.assertTrue(u'<test>/en/about/</test>' in response.content)
+            self.assertTrue('<test>/en/about/</test>' in str(response.content))
 
             response = self.client.get('/ru/about/')
             self._base_page_check(response, "ru", "about")
-            self.assertTrue(u'<test>/ru/about/</test>' in response.content.decode('utf8'))
+            self.assertTrue('<test>/ru/about/</test>' in response.content.decode('utf8'))
 
     @override_settings(SOLID_I18N_HANDLE_DEFAULT_PREFIX=True)
     def test_home_page_default_prefix_en(self):
