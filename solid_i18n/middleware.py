@@ -10,9 +10,6 @@ from .urlresolvers import SolidLocaleRegexURLResolver
 from .memory import set_language_from_path
 
 
-django_root_version = DJANGO_VERSION[0] * 10 + DJANGO_VERSION[1]
-
-
 class SolidLocaleMiddleware(LocaleMiddleware):
     """
     Request without language prefix will use default language.
@@ -73,7 +70,7 @@ class SolidLocaleMiddleware(LocaleMiddleware):
             if not (self.is_language_prefix_patterns_used()
                     and language_from_path):
                 patch_vary_headers(response, ('Accept-Language',))
-            if django_root_version < 16:
+            if DJANGO_VERSION < (1, 6):
                 trans.deactivate()
         if 'Content-Language' not in response:
             response['Content-Language'] = language
@@ -105,7 +102,7 @@ class SolidLocaleMiddleware(LocaleMiddleware):
             path_valid = is_valid_path("%s/" % language_path, urlconf)
 
         if path_valid:
-            if django_root_version >= 17:
+            if DJANGO_VERSION >= (1, 7):
                 scheme = request.scheme
             else:
                 scheme = 'https' if request.is_secure() else 'http'
