@@ -110,15 +110,34 @@ class TranslationAccessTestCase(URLTestCaseBase):
     # settings
 
     @override_settings(SOLID_I18N_HANDLE_DEFAULT_PREFIX=True)
-    def test_about_page_default_prefix_en(self):
-        with translation.override('en'):
-            response = self.client.get('/en/about/')
-            self._base_page_check(response, "en", "about")
-            self.assertTrue('<test>/en/about/</test>' in str(response.content))
+    def test_about_page_default_prefix_en_with_prefix_first(self):
+        # with prefix
+        response = self.client.get('/en/about/')
+        self._base_page_check(response, "en", "about")
+        self.assertTrue('<test>/en/about/</test>' in str(response.content))
+        # without prefix
+        response = self.client.get('/about/')
+        self._base_page_check(response, "en", "about")
+        self.assertTrue('<test>/about/</test>' in str(response.content))
+        # again with prefix
+        response = self.client.get('/en/about/')
+        self._base_page_check(response, "en", "about")
+        self.assertTrue('<test>/en/about/</test>' in str(response.content))
 
-            response = self.client.get('/about/')
-            self._base_page_check(response, "en", "about")
-            self.assertTrue('<test>/about/</test>' in str(response.content))
+    @override_settings(SOLID_I18N_HANDLE_DEFAULT_PREFIX=True)
+    def test_about_page_default_prefix_en_without_prefix_first(self):
+        # without prefix
+        response = self.client.get('/about/')
+        self._base_page_check(response, "en", "about")
+        self.assertTrue('<test>/about/</test>' in str(response.content))
+        # with prefix
+        response = self.client.get('/en/about/')
+        self._base_page_check(response, "en", "about")
+        self.assertTrue('<test>/en/about/</test>' in str(response.content))
+        # again without prefix
+        response = self.client.get('/about/')
+        self._base_page_check(response, "en", "about")
+        self.assertTrue('<test>/about/</test>' in str(response.content))
 
     @override_settings(SOLID_I18N_HANDLE_DEFAULT_PREFIX=True)
     def test_about_page_default_prefix_ru(self):
