@@ -60,7 +60,7 @@ Quick start
         # Optional. If you want to use redirects, set this to True
         SOLID_I18N_USE_REDIRECTS = False
 
-3. Add `SolidLocaleMiddleware` instead of [LocaleMiddleware](https://docs.djangoproject.com/en/dev/topics/i18n/translation/#how-django-discovers-language-preference) to `MIDDLEWARE_CLASSES`:
+3. Add `SolidLocaleMiddleware` instead of [LocaleMiddleware](https://docs.djangoproject.com/en/dev/ref/middleware/#django.middleware.locale.LocaleMiddleware) to `MIDDLEWARE_CLASSES`:
 
         MIDDLEWARE_CLASSES = (
            'django.contrib.sessions.middleware.SessionMiddleware',
