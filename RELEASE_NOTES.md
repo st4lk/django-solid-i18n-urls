@@ -1,6 +1,14 @@
 solid_i18n release notes
 ========================
 
+v0.8.1
+------
+
+ - fix url reverse in case of `SOLID_I18N_HANDLE_DEFAULT_PREFIX = True`
+ - simplify django version checking
+
+Issues: [#13](https://github.com/st4lk/django-solid-i18n-urls/issues/13), [#14](https://github.com/st4lk/django-solid-i18n-urls/issues/14)
+
 v0.7.1
 ------
 
