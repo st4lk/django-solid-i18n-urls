@@ -1,6 +1,13 @@
 solid_i18n release notes
 ========================
 
+v0.9.1
+------
+
+ - fix working with [set_language](https://docs.djangoproject.com/en/dev/topics/i18n/translation/#set-language-redirect-view) and `SOLID_I18N_HANDLE_DEFAULT_PREFIX = True`
+
+Issues: [#17](https://github.com/st4lk/django-solid-i18n-urls/issues/17)
+
 v0.8.1
 ------
 
