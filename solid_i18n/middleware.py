@@ -41,12 +41,11 @@ class SolidLocaleMiddleware(LocaleMiddleware):
 
     def process_request(self, request):
         check_path = self.is_language_prefix_patterns_used()
+        language_path = trans.get_language_from_path(request.path_info)
         if check_path and not self.use_redirects:
-            language_path = trans.get_language_from_path(request.path_info)
             language = language_path or self.default_lang
         else:
-            language_path = trans.get_language_from_request(request, check_path)
-            language = language_path
+            language = trans.get_language_from_request(request, check_path)
         set_language_from_path(language_path)
         trans.activate(language)
         request.LANGUAGE_CODE = trans.get_language()
