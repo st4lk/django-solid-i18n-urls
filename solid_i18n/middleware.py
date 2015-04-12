@@ -1,6 +1,7 @@
 from django import VERSION as DJANGO_VERSION
 from django.conf import settings
-from django.core.urlresolvers import get_resolver, is_valid_path
+from django.core.urlresolvers import (is_valid_path, get_resolver,
+    get_script_prefix)
 from django.http import HttpResponseRedirect
 from django.utils.cache import patch_vary_headers
 from django.utils import translation as trans
@@ -86,15 +87,16 @@ class SolidLocaleMiddleware(LocaleMiddleware):
         return no_lang_tag_path
 
     def perform_redirect(self, request, language):
+        # language can be empty string (in case of default language)
         path_info = request.path_info
         full_path = request.get_full_path()
-        if language:
-            language = '/%s' % language
-        else:
+        if not language:
             path_info = self.remove_lang_from_path(path_info)
             full_path = self.remove_lang_from_path(full_path)
         urlconf = getattr(request, 'urlconf', None)
         language_path = '%s%s' % (language, path_info)
+        if not language_path.startswith('/'):
+            language_path = '/' + language_path
         path_valid = is_valid_path(language_path, urlconf)
         if (not path_valid and settings.APPEND_SLASH
                 and not language_path.endswith('/')):
@@ -105,8 +107,18 @@ class SolidLocaleMiddleware(LocaleMiddleware):
                 scheme = request.scheme
             else:
                 scheme = 'https' if request.is_secure() else 'http'
-            language_url = "%s://%s%s%s" % (
-                scheme, request.get_host(), language, full_path)
+            script_prefix = get_script_prefix()
+            language_url = "%s://%s%s" % (
+                scheme,
+                request.get_host(),
+                # insert language after the script prefix and before the
+                # rest of the URL
+                full_path.replace(
+                    script_prefix,
+                    '%s%s/' % (script_prefix, language) if language else script_prefix,
+                    1
+                )
+            )
             return self.response_redirect_class(language_url)
 
     def is_language_prefix_patterns_used(self):
