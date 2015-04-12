@@ -1,7 +1,19 @@
 from .settings import *
+from django import VERSION
 
-INSTALLED_APPS += (
-    'django_nose',
-)
+if VERSION < (1, 8):
+    INSTALLED_APPS += (
+        'django_nose',
+    )
 
-TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+    TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': ':memory:',
+        'USER': '',
+        'PASSWORD': '',
+        'TEST_CHARSET': 'utf8',
+    }}

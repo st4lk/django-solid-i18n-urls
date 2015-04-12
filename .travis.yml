@@ -13,11 +13,14 @@ env:
   - TOXENV=py33-15
   - TOXENV=py33-16
   - TOXENV=py33-17
+  - TOXENV=py33-18
   - TOXENV=py34-17
+  - TOXENV=py34-18
   - TOXENV=py27-14
   - TOXENV=py27-15
   - TOXENV=py27-16
   - TOXENV=py27-17
+  - TOXENV=py27-18
 
 
 branches:
