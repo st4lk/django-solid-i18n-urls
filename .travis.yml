@@ -17,7 +17,7 @@ install: pip install --quiet tox
 script: tox
 
 after_script:
-    - if [ $TOXENV == "py27-18" ]; then
+    - if [ $TOXENV == "py27-17" ]; then
         pip install --quiet coveralls;
         coveralls;
       fi
