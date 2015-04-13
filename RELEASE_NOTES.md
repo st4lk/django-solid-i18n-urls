@@ -1,6 +1,14 @@
 solid_i18n release notes
 ========================
 
+v1.0.0
+------
+
+ - Add django 1.8 support
+
+Issues: [#8](https://github.com/st4lk/django-solid-i18n-urls/issues/8)
+Issues: [#19](https://github.com/st4lk/django-solid-i18n-urls/issues/19)
+
 v0.9.1
 ------
 
