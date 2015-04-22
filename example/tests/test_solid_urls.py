@@ -198,7 +198,7 @@ class TranslationAccessTestCase(URLTestCaseBase):
     def test_home_page_default_prefix_en_redirect(self):
         with translation.override('en'):
             response = self.client.get('/en/')
-            self.assertEqual(response.status_code, 302)
+            self.assertEqual(response.status_code, 301)
             self.assertTrue('/en/' not in response['Location'])
             response = self.client.get(response['Location'])
             self._base_page_check(response, "en", "home")
@@ -207,7 +207,7 @@ class TranslationAccessTestCase(URLTestCaseBase):
     def test_home_page_default_prefix_ru_redirect(self):
         with translation.override('ru'):
             response = self.client.get('/en/')
-            self.assertEqual(response.status_code, 302)
+            self.assertEqual(response.status_code, 301)
             self.assertTrue('/en/' not in response['Location'])
             response = self.client.get(response['Location'])
             self._base_page_check(response, "en", "home")
@@ -280,7 +280,7 @@ class TranslationAccessTestCase(URLTestCaseBase):
     @override_settings(SOLID_I18N_DEFAULT_PREFIX_REDIRECT=True)
     def test_home_page_prefix_default_prefix_en_redirect(self):
         response = self.client.get('/en/about/', **self.en_http_headers)
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 301)
         self.assertTrue('/about/' in response['Location'])
         self.assertFalse('/en/about/' in response['Location'])
         self.assertFalse('/ru/about/' in response['Location'])
@@ -289,7 +289,7 @@ class TranslationAccessTestCase(URLTestCaseBase):
     @override_settings(SOLID_I18N_DEFAULT_PREFIX_REDIRECT=True)
     def test_home_page_prefix_default_prefix_ru_redirect(self):
         response = self.client.get('/en/about/', **self.ru_http_headers)
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 301)
         self.assertTrue('/about/' in response['Location'])
         self.assertFalse('/en/about/' in response['Location'])
         self.assertFalse('/ru/about/' in response['Location'])
