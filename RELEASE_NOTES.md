@@ -1,6 +1,15 @@
 solid_i18n release notes
 ========================
 
+v1.1.0
+------
+
+ - Use 301 redirect in case of `SOLID_I18N_DEFAULT_PREFIX_REDIRECT`
+ - Upload wheel
+
+Issues: [#24](https://github.com/st4lk/django-solid-i18n-urls/issues/24)
+Issues: [#20](https://github.com/st4lk/django-solid-i18n-urls/issues/20)
+
 v1.0.0
 ------
 
