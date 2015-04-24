@@ -7,16 +7,14 @@ v1.1.0
  - Use 301 redirect in case of `SOLID_I18N_DEFAULT_PREFIX_REDIRECT`
  - Upload wheel
 
-Issues: [#24](https://github.com/st4lk/django-solid-i18n-urls/issues/24)
-Issues: [#20](https://github.com/st4lk/django-solid-i18n-urls/issues/20)
+Issues: [#24](https://github.com/st4lk/django-solid-i18n-urls/issues/24), [#20](https://github.com/st4lk/django-solid-i18n-urls/issues/20)
 
 v1.0.0
 ------
 
  - Add django 1.8 support
 
-Issues: [#8](https://github.com/st4lk/django-solid-i18n-urls/issues/8)
-Issues: [#19](https://github.com/st4lk/django-solid-i18n-urls/issues/19)
+Issues: [#8](https://github.com/st4lk/django-solid-i18n-urls/issues/8), [#19](https://github.com/st4lk/django-solid-i18n-urls/issues/19)
 
 v0.9.1
 ------
