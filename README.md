@@ -1,7 +1,7 @@
 Django solid_i18n urls
 =====
 
-[![Build Status](https://travis-ci.org/st4lk/django-solid-i18n-urls.png?branch=master)](https://travis-ci.org/st4lk/django-solid-i18n-urls) [![Coverage Status](https://coveralls.io/repos/st4lk/django-solid-i18n-urls/badge.png?branch=master)](https://coveralls.io/r/st4lk/django-solid-i18n-urls?branch=master) [![pypi](https://pypip.in/d/solid_i18n/badge.png)](https://crate.io/packages/solid_i18n/)
+[![Build Status](https://travis-ci.org/st4lk/django-solid-i18n-urls.svg?branch=master)](https://travis-ci.org/st4lk/django-solid-i18n-urls) [![Coverage Status](https://coveralls.io/repos/st4lk/django-solid-i18n-urls/badge.svg?branch=master)](https://coveralls.io/r/st4lk/django-solid-i18n-urls?branch=master)
 
 solid_i18n contains middleware and url patterns to use default language at root path (without language prefix).
 
