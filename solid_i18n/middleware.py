@@ -27,11 +27,7 @@ class SolidLocaleMiddleware(LocaleMiddleware):
     response_default_language_redirect_class = HttpResponsePermanentRedirect
 
     def __init__(self):
-        self._is_language_prefix_patterns_used = False
-        for url_pattern in get_resolver(None).url_patterns:
-            if isinstance(url_pattern, SolidLocaleRegexURLResolver):
-                self._is_language_prefix_patterns_used = True
-                break
+        self._is_language_prefix_patterns_used = None
 
     @property
     def use_redirects(self):
@@ -131,4 +127,9 @@ class SolidLocaleMiddleware(LocaleMiddleware):
         Returns `True` if the `SolidLocaleRegexURLResolver` is used
         at root level of the urlpatterns, else it returns `False`.
         """
+        if self._is_language_prefix_patterns_used is None:
+            self._is_language_prefix_patterns_used = False
+            for url_pattern in get_resolver(None).url_patterns:
+                if isinstance(url_pattern, SolidLocaleRegexURLResolver):
+                    self._is_language_prefix_patterns_used = True
         return self._is_language_prefix_patterns_used
