@@ -132,4 +132,5 @@ class SolidLocaleMiddleware(LocaleMiddleware):
             for url_pattern in get_resolver(None).url_patterns:
                 if isinstance(url_pattern, SolidLocaleRegexURLResolver):
                     self._is_language_prefix_patterns_used = True
+                    break
         return self._is_language_prefix_patterns_used
