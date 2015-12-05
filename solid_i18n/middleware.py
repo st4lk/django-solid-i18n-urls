@@ -100,22 +100,14 @@ class SolidLocaleMiddleware(LocaleMiddleware):
             path_valid = is_valid_path("%s/" % language_path, urlconf)
 
         if path_valid:
-            if DJANGO_VERSION >= (1, 7):
-                scheme = request.scheme
-            else:
-                scheme = 'https' if request.is_secure() else 'http'
             script_prefix = get_script_prefix()
-            language_url = "%s://%s%s" % (
-                scheme,
-                request.get_host(),
-                # insert language after the script prefix and before the
-                # rest of the URL
-                full_path.replace(
-                    script_prefix,
-                    '%s%s/' % (script_prefix, language) if language else script_prefix,
-                    1
-                )
+
+            language_url = full_path.replace(
+                script_prefix,
+                '%s%s/' % (script_prefix, language) if language else script_prefix,
+                1
             )
+
             # return a 301 permanent redirect if on default language
             if (is_permanent):
                 return self.response_default_language_redirect_class(language_url)
