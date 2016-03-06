@@ -16,6 +16,8 @@ Requirements
 - python (2.6, 2.7, 3.2, 3.3, 3.4)
 - django (1.4, 1.5, 1.6, 1.7, 1.8)
 
+**WARNING**: Support for django 1.4, 1.5, 1.6, 1.7 and for python 2.6, 3.2, 3.3 will be droped in next version.
+
 Release notes
 -------------
 

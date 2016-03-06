@@ -7,7 +7,7 @@ try:
 except ImportError:
     pass
 else:
-    DEPRECATED_DJANGO_VERSIONS = [(1, 5)]
+    DEPRECATED_DJANGO_VERSIONS = [(1, 4), (1, 5), (1, 6), (1, 7)]
 
     if VERSION[:2] in DEPRECATED_DJANGO_VERSIONS:
         warnings.warn("Support of Django versions %s will be dropped soon"
