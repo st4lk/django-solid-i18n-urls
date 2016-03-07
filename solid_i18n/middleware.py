@@ -7,6 +7,8 @@ from django.utils.cache import patch_vary_headers
 from django.utils import translation as trans
 from django.utils.translation.trans_real import language_code_prefix_re
 from django.middleware.locale import LocaleMiddleware
+from django.utils.functional import cached_property
+
 from .urlresolvers import SolidLocaleRegexURLResolver
 from .memory import set_language_from_path
 
@@ -26,9 +28,6 @@ class SolidLocaleMiddleware(LocaleMiddleware):
     response_redirect_class = HttpResponseRedirect
     response_default_language_redirect_class = HttpResponsePermanentRedirect
 
-    def __init__(self):
-        self._is_language_prefix_patterns_used = None
-
     @property
     def use_redirects(self):
         return getattr(settings, 'SOLID_I18N_USE_REDIRECTS', False)
@@ -38,7 +37,7 @@ class SolidLocaleMiddleware(LocaleMiddleware):
         return settings.LANGUAGE_CODE
 
     def process_request(self, request):
-        check_path = self.is_language_prefix_patterns_used()
+        check_path = self.is_language_prefix_patterns_used
         language_path = trans.get_language_from_path(request.path_info)
         if check_path and not self.use_redirects:
             language = language_path or self.default_lang
@@ -53,18 +52,18 @@ class SolidLocaleMiddleware(LocaleMiddleware):
         language_from_path = trans.get_language_from_path(request.path_info)
         if (getattr(settings, 'SOLID_I18N_DEFAULT_PREFIX_REDIRECT', False)
                 and language_from_path == self.default_lang
-                and self.is_language_prefix_patterns_used()):
+                and self.is_language_prefix_patterns_used):
             redirect = self.perform_redirect(request, '', is_permanent=True)
             if redirect:
                 return redirect
         elif self.use_redirects:
             if (response.status_code == 404 and not language_from_path
-                    and self.is_language_prefix_patterns_used()
+                    and self.is_language_prefix_patterns_used
                     and language != self.default_lang):
                 redirect = self.perform_redirect(request, language)
                 if redirect:
                     return redirect
-            if not (self.is_language_prefix_patterns_used()
+            if not (self.is_language_prefix_patterns_used
                     and language_from_path):
                 patch_vary_headers(response, ('Accept-Language',))
             if DJANGO_VERSION < (1, 6):
@@ -114,15 +113,13 @@ class SolidLocaleMiddleware(LocaleMiddleware):
             else:
                 return self.response_redirect_class(language_url)
 
+    @cached_property
     def is_language_prefix_patterns_used(self):
         """
         Returns `True` if the `SolidLocaleRegexURLResolver` is used
         at root level of the urlpatterns, else it returns `False`.
         """
-        if self._is_language_prefix_patterns_used is None:
-            self._is_language_prefix_patterns_used = False
-            for url_pattern in get_resolver(None).url_patterns:
-                if isinstance(url_pattern, SolidLocaleRegexURLResolver):
-                    self._is_language_prefix_patterns_used = True
-                    break
-        return self._is_language_prefix_patterns_used
+        for url_pattern in get_resolver(None).url_patterns:
+            if isinstance(url_pattern, SolidLocaleRegexURLResolver):
+                return True
+        return False
