@@ -11,6 +11,7 @@ from django.utils.functional import cached_property
 
 from .urlresolvers import SolidLocaleRegexURLResolver
 from .memory import set_language_from_path
+from .contrib import get_full_path
 
 
 class SolidLocaleMiddleware(LocaleMiddleware):
@@ -85,22 +86,28 @@ class SolidLocaleMiddleware(LocaleMiddleware):
     def perform_redirect(self, request, language, is_permanent=False):
         # language can be empty string (in case of default language)
         path_info = request.path_info
-        full_path = request.get_full_path()
         if not language:
             path_info = self.remove_lang_from_path(path_info)
-            full_path = self.remove_lang_from_path(full_path)
         urlconf = getattr(request, 'urlconf', None)
         language_path = '%s%s' % (language, path_info)
         if not language_path.startswith('/'):
             language_path = '/' + language_path
         path_valid = is_valid_path(language_path, urlconf)
-        if (not path_valid and settings.APPEND_SLASH
-                and not language_path.endswith('/')):
-            path_valid = is_valid_path("%s/" % language_path, urlconf)
+        path_needs_slash = (
+            not path_valid and (
+                settings.APPEND_SLASH and not language_path.endswith('/')
+                and is_valid_path('%s/' % language_path, urlconf)
+            )
+        )
 
-        if path_valid:
+        if path_valid or path_needs_slash:
             script_prefix = get_script_prefix()
-
+            if DJANGO_VERSION < (1, 9):
+                full_path = get_full_path(request, force_append_slash=path_needs_slash)
+            else:
+                full_path = request.get_full_path(force_append_slash=path_needs_slash)
+            if not language:
+                full_path = self.remove_lang_from_path(full_path)
             language_url = full_path.replace(
                 script_prefix,
                 '%s%s/' % (script_prefix, language) if language else script_prefix,

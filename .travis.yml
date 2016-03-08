@@ -4,7 +4,6 @@ python:
   - "2.7"
 
 env:
-  - TOXENV=py26-14
   - TOXENV=py26-15
   - TOXENV=py26-16
   - TOXENV=py32-15
@@ -17,7 +16,6 @@ env:
   - TOXENV=py34-17
   - TOXENV=py34-18
   - TOXENV=py34-19
-  - TOXENV=py27-14
   - TOXENV=py27-15
   - TOXENV=py27-16
   - TOXENV=py27-17
