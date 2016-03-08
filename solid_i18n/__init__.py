@@ -1,6 +1,6 @@
 import warnings
 __author__ = 'st4lk'
-__version__ = '1.1.1'
+__version__ = '1.2.0'
 
 try:
     from django import VERSION

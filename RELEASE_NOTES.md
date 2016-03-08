@@ -1,6 +1,13 @@
 solid_i18n release notes
 ========================
 
+v1.2.0
+------
+- Add django 1.9 support
+- Drop django 1.4 support
+
+Issues: [#32](https://github.com/st4lk/django-solid-i18n-urls/issues/32)
+
 v1.1.1
 ------
 - fix django 1.8 `AppRegistryNotReady("Apps aren't loaded yet.")`
