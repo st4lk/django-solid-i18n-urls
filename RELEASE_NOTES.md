@@ -5,6 +5,7 @@ v1.2.0
 ------
 - Add django 1.9 support
 - Drop django 1.4 support
+- Drop python 3.2 support
 
 Issues: [#32](https://github.com/st4lk/django-solid-i18n-urls/issues/32)
 

@@ -6,9 +6,6 @@ python:
 env:
   - TOXENV=py26-15
   - TOXENV=py26-16
-  - TOXENV=py32-15
-  - TOXENV=py32-16
-  - TOXENV=py32-17
   - TOXENV=py33-15
   - TOXENV=py33-16
   - TOXENV=py33-17
