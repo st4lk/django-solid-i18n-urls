@@ -6,8 +6,9 @@ v1.2.0
 - Add django 1.9 support
 - Drop django 1.4 support
 - Drop python 3.2 support
+- Simplify tox settings
 
-Issues: [#32](https://github.com/st4lk/django-solid-i18n-urls/issues/32)
+Issues: [#32](https://github.com/st4lk/django-solid-i18n-urls/issues/32), [#23](https://github.com/st4lk/django-solid-i18n-urls/issues/23   ), [#21](https://github.com/st4lk/django-solid-i18n-urls/issues/21)
 
 v1.1.1
 ------
