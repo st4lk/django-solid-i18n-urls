@@ -67,8 +67,6 @@ class SolidLocaleMiddleware(LocaleMiddleware):
             if not (self.is_language_prefix_patterns_used
                     and language_from_path):
                 patch_vary_headers(response, ('Accept-Language',))
-            if DJANGO_VERSION < (1, 6):
-                trans.deactivate()
         if 'Content-Language' not in response:
             response['Content-Language'] = language
         return response

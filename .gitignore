@@ -11,3 +11,4 @@ RELEASE_NOTES.rst
 generate_rst.py
 build/
 .coverage
+.cache
