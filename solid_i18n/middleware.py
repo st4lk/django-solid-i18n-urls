@@ -13,6 +13,16 @@ from .urlresolvers import SolidLocaleRegexURLResolver
 from .memory import set_language_from_path
 from .contrib import get_full_path
 
+def get_language_from_path(path):
+    """
+    django.utils.translation wrapper does't allow/pass strict argument
+    """
+    if settings.USE_I18N:
+        return trans.trans_real.get_language_from_path(
+            path,
+            strict=getattr(settings, 'SOLID_I18N_PREFIX_STRICT', False),
+        )
+
 
 class SolidLocaleMiddleware(LocaleMiddleware):
     """
@@ -39,7 +49,7 @@ class SolidLocaleMiddleware(LocaleMiddleware):
 
     def process_request(self, request):
         check_path = self.is_language_prefix_patterns_used
-        language_path = trans.get_language_from_path(request.path_info)
+        language_path = get_language_from_path(request.path_info)
         if check_path and not self.use_redirects:
             language = language_path or self.default_lang
         else:
@@ -50,7 +60,7 @@ class SolidLocaleMiddleware(LocaleMiddleware):
 
     def process_response(self, request, response):
         language = trans.get_language()
-        language_from_path = trans.get_language_from_path(request.path_info)
+        language_from_path = get_language_from_path(request.path_info)
         if (getattr(settings, 'SOLID_I18N_DEFAULT_PREFIX_REDIRECT', False)
                 and language_from_path == self.default_lang
                 and self.is_language_prefix_patterns_used):

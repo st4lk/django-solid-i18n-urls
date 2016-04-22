@@ -133,6 +133,23 @@ class TranslationAccessTestCase(URLTestCaseBase):
 
     # settings
 
+    @override_settings(SOLID_I18N_PREFIX_STRICT=False)
+    def test_about_page_strict_prefix(self):
+        response = self.client.get('/ru/about/')
+        self._base_page_check(response, "ru", "about")
+        self.assertContains(response, '<test>/ru/about/</test>')
+        response = self.client.get('/ru-slug/about/')
+        self._base_page_check(response, "ru", "about")
+        self.assertContains(response, '<test>/ru-slug/about/</test>')
+
+    @override_settings(SOLID_I18N_PREFIX_STRICT=True)
+    def test_about_page_strict_prefix(self):
+        response = self.client.get('/ru/about/')
+        self._base_page_check(response, "ru", "about")
+        self.assertContains(response, '<test>/ru/about/</test>')
+        response = self.client.get('/ru-slug/about/')
+        self.assertEqual(response.status_code, 404)
+
     @override_settings(SOLID_I18N_HANDLE_DEFAULT_PREFIX=True)
     def test_about_page_default_prefix_en_with_prefix_first(self):
         # with prefix
