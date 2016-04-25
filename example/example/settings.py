@@ -41,6 +41,8 @@ LANGUAGE_CODE = 'en'
 LANGUAGES = (
     ('ru', 'Russian'),
     ('en', 'English'),
+    ('my', 'Burmese'),
+    ('pt-br', 'Brazilian Portuguese'),
 )
 
 LOCALE_PATHS = (

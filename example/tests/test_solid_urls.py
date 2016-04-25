@@ -134,21 +134,26 @@ class TranslationAccessTestCase(URLTestCaseBase):
     # settings
 
     @override_settings(SOLID_I18N_PREFIX_STRICT=False)
-    def test_about_page_strict_prefix(self):
-        response = self.client.get('/ru/about/')
-        self._base_page_check(response, "ru", "about")
-        self.assertContains(response, '<test>/ru/about/</test>')
-        response = self.client.get('/ru-slug/about/')
-        self._base_page_check(response, "ru", "about")
-        self.assertContains(response, '<test>/ru-slug/about/</test>')
+    def test_about_page_strict_prefix_false(self):
+        response = self.client.get('/my-slug/')
+        self.assertEqual(response._headers.get('content-language')[-1], 'my')
+        response = self.client.get('/ru/slug/')
+        self.assertEqual(response._headers.get('content-language')[-1], 'ru')
+        response = self.client.get('/pt-br/slug/')
+        self.assertEqual(response._headers.get('content-language')[-1], 'pt-br')
+        response = self.client.get('/pt-broughton/slug/')
+        self.assertEqual(response._headers.get('content-language')[-1], 'pt-br')
 
     @override_settings(SOLID_I18N_PREFIX_STRICT=True)
-    def test_about_page_strict_prefix(self):
-        response = self.client.get('/ru/about/')
-        self._base_page_check(response, "ru", "about")
-        self.assertContains(response, '<test>/ru/about/</test>')
-        response = self.client.get('/ru-slug/about/')
-        self.assertEqual(response.status_code, 404)
+    def test_about_page_strict_prefix_true(self):
+        response = self.client.get('/my-slug/')
+        self.assertEqual(response._headers.get('content-language')[-1], 'en')
+        response = self.client.get('/ru/slug/')
+        self.assertEqual(response._headers.get('content-language')[-1], 'ru')
+        response = self.client.get('/pt-br/slug/')
+        self.assertEqual(response._headers.get('content-language')[-1], 'pt-br')
+        response = self.client.get('/pt-broughton/slug/')
+        self.assertEqual(response._headers.get('content-language')[-1], 'en')
 
     @override_settings(SOLID_I18N_HANDLE_DEFAULT_PREFIX=True)
     def test_about_page_default_prefix_en_with_prefix_first(self):

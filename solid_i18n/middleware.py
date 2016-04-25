@@ -1,3 +1,5 @@
+import re
+
 from django import VERSION as DJANGO_VERSION
 from django.conf import settings
 from django.core.urlresolvers import (is_valid_path, get_resolver,
@@ -13,15 +15,28 @@ from .urlresolvers import SolidLocaleRegexURLResolver
 from .memory import set_language_from_path
 from .contrib import get_full_path
 
+strict_language_code_prefix_re = re.compile(
+    r'^/({0})(/|$)'.format(
+        '|'.join(
+            map(
+                re.escape,
+                dict(settings.LANGUAGES).keys()
+            )
+        )
+    ),
+    flags=re.IGNORECASE
+)
+
 def get_language_from_path(path):
     """
     django.utils.translation wrapper does't allow/pass strict argument
     """
     if settings.USE_I18N:
-        return trans.trans_real.get_language_from_path(
-            path,
-            strict=getattr(settings, 'SOLID_I18N_PREFIX_STRICT', False),
-        )
+        strict = getattr(settings, 'SOLID_I18N_PREFIX_STRICT', False)
+        if strict and not strict_language_code_prefix_re.match(path):
+            return None
+        # strict below could possibly be removed since the above is in place
+        return trans.trans_real.get_language_from_path(path, strict=strict)
 
 
 class SolidLocaleMiddleware(LocaleMiddleware):
