@@ -95,6 +95,10 @@ Otherwise, `/en/...` will return 404 status_code.
 - `SOLID_I18N_DEFAULT_PREFIX_REDIRECT = False`    
 If `True`, redirect from url with default language prefix to url without any prefix, i.e. redirect from `/en/...` to `/...` if 'en' is default language.
 
+- `SOLID_I18N_PREFIX_STRICT = False`
+If `True`, pass `strict=True` to Django's `get_language_from_path` function
+which avoids matching paths like `/my-slug/` to `my`.
+
 
 Example site
 -----------
