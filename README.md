@@ -95,10 +95,32 @@ Otherwise, `/en/...` will return 404 status_code.
 - `SOLID_I18N_DEFAULT_PREFIX_REDIRECT = False`    
 If `True`, redirect from url with default language prefix to url without any prefix, i.e. redirect from `/en/...` to `/...` if 'en' is default language.
 
-- `SOLID_I18N_PREFIX_STRICT = False`
-If `True`, pass `strict=True` to Django's `get_language_from_path` function
-which avoids matching paths like `/my-slug/` to `my`.
+- `SOLID_I18N_PREFIX_STRICT = False`    
+Experimental. If `True`, paths like `/my-slug/` will call your view on that path, if language my-slug doesn't exists (here `my` is supported language).
 
+    Example.
+
+        # settings.py
+        LANGUAGES = (
+            ('en', 'English'),
+            ('my', 'Burmese'),
+        )
+
+        # urls.py
+        urlpatterns = solid_i18n_patterns('',
+            url(r'^my-slug/$', some_view),
+        )
+
+    If `SOLID_I18N_PREFIX_STRICT=False`, then url /my-slug/ will respond with 404, since language `my-slug` is not found.
+    This happens, because we have a registered language tag `my`. Language tag can have form like this:
+
+        language-region
+
+    So django in this case tries to find language 'my-slug'. But it fails and that is why django respond 404.
+    And your view `some_view` will not be called.
+
+    But, if we set `SOLID_I18N_PREFIX_STRICT=True`, then resolve system will get language only from exact 'my' prefix.
+    In case of /my-slug/ url the prefix is not exact, and our `some_view` will be found and called.
 
 Example site
 -----------

@@ -157,6 +157,7 @@ INSTALLED_APPS = (
 SOLID_I18N_USE_REDIRECTS = False
 SOLID_I18N_HANDLE_DEFAULT_PREFIX = False
 SOLID_I18N_DEFAULT_PREFIX_REDIRECT = False
+SOLID_I18N_PREFIX_STRICT = False
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
