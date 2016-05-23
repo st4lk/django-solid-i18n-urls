@@ -1,6 +1,12 @@
 solid_i18n release notes
 ========================
 
+v1.3.0
+------
+- Add SOLID_I18N_PREFIX_STRICT setting to handle urls starting with language code
+
+Issues: [#34](https://github.com/st4lk/django-solid-i18n-urls/issues/34)
+
 v1.2.0
 ------
 - Add django 1.9 support
