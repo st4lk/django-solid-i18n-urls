@@ -9,12 +9,24 @@ solid_i18n contains middleware and url patterns to use default language at root 
 
 Default language is set in settings.LANGUAGE_CODE.
 
+Deprecation notice
+------------------
+Starting from [Django 1.10](https://docs.djangoproject.com/en/dev/releases/1.10/#internationalization), built-in `i18n_patterns` accept optional argument `prefix_default_language`. If it is `False`, then Django will serve url without language prefix by itself. Look [docs](https://docs.djangoproject.com/en/dev/topics/i18n/translation/#django.conf.urls.i18n.i18n_patterns) for more details.
+
+This package can still be useful in following cases (look below for settings details):
+- You need `settings.SOLID_I18N_USE_REDIRECTS = True` behaviour
+- You need `settings.SOLID_I18N_HANDLE_DEFAULT_PREFIX = True` behaviour
+- You need `settings.SOLID_I18N_DEFAULT_PREFIX_REDIRECT = True` behaviour
+- You need `settings.SOLID_I18N_PREFIX_STRICT = True` behaviour
+
+In all other cases no need in current package, just use Django>=1.10.
+
 
 Requirements
 -----------
 
 - python (2.7, 3.4, 3.5)
-- django (1.8, 1.9)
+- django (1.8, 1.9, 1.10)
 
 Release notes
 -------------
@@ -75,7 +87,7 @@ Quick start
         from django.conf.urls import patterns, include, url
         from solid_i18n.urls import solid_i18n_patterns
 
-        urlpatterns = solid_i18n_patterns('',
+        urlpatterns = solid_i18n_patterns(
             url(r'^about/$', 'about.view', name='about'),
             url(r'^news/', include(news_patterns, namespace='news')),
         )

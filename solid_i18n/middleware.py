@@ -2,18 +2,16 @@ import re
 
 from django import VERSION as DJANGO_VERSION
 from django.conf import settings
-from django.core.urlresolvers import (is_valid_path, get_resolver,
-    get_script_prefix)
+from django.core.urlresolvers import is_valid_path, get_script_prefix
 from django.http import HttpResponseRedirect, HttpResponsePermanentRedirect
-from django.utils.cache import patch_vary_headers
-from django.utils import translation as trans
-from django.utils.translation.trans_real import language_code_prefix_re
 from django.middleware.locale import LocaleMiddleware
-from django.utils.functional import cached_property
+from django.utils import translation as trans
+from django.utils.cache import patch_vary_headers
+from django.utils.translation.trans_real import language_code_prefix_re
 
-from .urlresolvers import SolidLocaleRegexURLResolver
-from .memory import set_language_from_path
 from .contrib import get_full_path
+from .memory import set_language_from_path
+from .urls import is_language_prefix_patterns_used
 
 strict_language_code_prefix_re = re.compile(
     r'^/({0})(/|$)'.format(
@@ -26,6 +24,7 @@ strict_language_code_prefix_re = re.compile(
     ),
     flags=re.IGNORECASE
 )
+
 
 def get_language_from_path(path):
     """
@@ -63,7 +62,8 @@ class SolidLocaleMiddleware(LocaleMiddleware):
         return settings.LANGUAGE_CODE
 
     def process_request(self, request):
-        check_path = self.is_language_prefix_patterns_used
+        urlconf = getattr(request, 'urlconf', settings.ROOT_URLCONF)
+        check_path = is_language_prefix_patterns_used(urlconf)
         language_path = get_language_from_path(request.path_info)
         if check_path and not self.use_redirects:
             language = language_path or self.default_lang
@@ -76,21 +76,22 @@ class SolidLocaleMiddleware(LocaleMiddleware):
     def process_response(self, request, response):
         language = trans.get_language()
         language_from_path = get_language_from_path(request.path_info)
-        if (getattr(settings, 'SOLID_I18N_DEFAULT_PREFIX_REDIRECT', False)
-                and language_from_path == self.default_lang
-                and self.is_language_prefix_patterns_used):
+        urlconf = getattr(request, 'urlconf', settings.ROOT_URLCONF)
+        i18n_patterns_used = is_language_prefix_patterns_used(urlconf)
+        if (getattr(settings, 'SOLID_I18N_DEFAULT_PREFIX_REDIRECT', False) and
+                language_from_path == self.default_lang and
+                i18n_patterns_used):
             redirect = self.perform_redirect(request, '', is_permanent=True)
             if redirect:
                 return redirect
         elif self.use_redirects:
-            if (response.status_code == 404 and not language_from_path
-                    and self.is_language_prefix_patterns_used
-                    and language != self.default_lang):
+            if (response.status_code == 404 and not language_from_path and
+                    i18n_patterns_used and
+                    language != self.default_lang):
                 redirect = self.perform_redirect(request, language)
                 if redirect:
                     return redirect
-            if not (self.is_language_prefix_patterns_used
-                    and language_from_path):
+            if not (i18n_patterns_used and language_from_path):
                 patch_vary_headers(response, ('Accept-Language',))
         if 'Content-Language' not in response:
             response['Content-Language'] = language
@@ -118,8 +119,8 @@ class SolidLocaleMiddleware(LocaleMiddleware):
         path_valid = is_valid_path(language_path, urlconf)
         path_needs_slash = (
             not path_valid and (
-                settings.APPEND_SLASH and not language_path.endswith('/')
-                and is_valid_path('%s/' % language_path, urlconf)
+                settings.APPEND_SLASH and not language_path.endswith('/') and
+                is_valid_path('%s/' % language_path, urlconf)
             )
         )
 
@@ -142,14 +143,3 @@ class SolidLocaleMiddleware(LocaleMiddleware):
                 return self.response_default_language_redirect_class(language_url)
             else:
                 return self.response_redirect_class(language_url)
-
-    @cached_property
-    def is_language_prefix_patterns_used(self):
-        """
-        Returns `True` if the `SolidLocaleRegexURLResolver` is used
-        at root level of the urlpatterns, else it returns `False`.
-        """
-        for url_pattern in get_resolver(None).url_patterns:
-            if isinstance(url_pattern, SolidLocaleRegexURLResolver):
-                return True
-        return False

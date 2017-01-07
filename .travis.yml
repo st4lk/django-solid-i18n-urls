@@ -11,10 +11,6 @@ env:
   - TOXENV=py27-django18
   - TOXENV=py27-django19
 
-branches:
-    only:
-        - master
-
 install: pip install --quiet tox
 
 # command to run tests

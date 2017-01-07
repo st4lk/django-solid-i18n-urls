@@ -12,3 +12,4 @@ generate_rst.py
 build/
 .coverage
 .cache
+*.sqlite

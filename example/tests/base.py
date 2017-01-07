@@ -3,6 +3,13 @@ try:
     from importlib import import_module
 except ImportError:
     from django.utils.importlib import import_module
+try:
+    from importlib import reload  # builtin reload deprecated since version 3.4
+except ImportError:
+    try:
+        from imp import reload
+    except ImportError:
+        pass
 from django.conf import settings
 from django.test import TestCase
 from django.core.urlresolvers import clear_url_caches
@@ -12,13 +19,8 @@ try:
 except ImportError:
     class TransRealMixin(object):
         pass
-try:
-    from importlib import reload  # builtin reload deprecated since version 3.4
-except ImportError:
-    try:
-        from imp import reload
-    except ImportError:
-        pass
+
+from solid_i18n.urls import is_language_prefix_patterns_used
 
 
 def reload_urlconf(urlconf=None, urls_attr='urlpatterns'):
@@ -34,6 +36,7 @@ class URLTestCaseBase(TransRealMixin, TestCase):
         # Make sure the cache is empty before we are doing our tests.
         super(URLTestCaseBase, self).tearDown()
         clear_url_caches()
+        is_language_prefix_patterns_used.cache_clear()
         reload_urlconf()
 
     def tearDown(self):
