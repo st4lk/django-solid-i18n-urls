@@ -1,6 +1,13 @@
 solid_i18n release notes
 ========================
 
+v1.4.0
+------
+- Add django 1.10 support
+- Add deprecation notice
+
+Issues: [#35](https://github.com/st4lk/django-solid-i18n-urls/issues/35)
+
 v1.3.0
 ------
 - Add SOLID_I18N_PREFIX_STRICT setting to handle urls starting with language code
