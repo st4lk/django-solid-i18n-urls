@@ -13,9 +13,9 @@ class SolidLocaleRegexURLResolver(LocaleRegexURLResolver):
     Rather than taking a regex argument, we just override the ``regex``
     function to always return the active language-code as regex.
     """
-    def __init__(self, urlconf_name, default_kwargs=None, app_name=None, namespace=None):
-        super(LocaleRegexURLResolver, self).__init__(
-            None, urlconf_name, default_kwargs, app_name, namespace)
+    def __init__(self, urlconf_name, *args, **kwargs):
+        super(SolidLocaleRegexURLResolver, self).__init__(
+            urlconf_name, *args, **kwargs)
         self.compiled_with_default = False
 
     @property
