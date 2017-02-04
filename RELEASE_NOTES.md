@@ -1,6 +1,13 @@
 solid_i18n release notes
 ========================
 
+v1.4.1
+------
+- Fix minor issue with SolidLocaleRegexURLResolver
+
+Issues: [#40](https://github.com/st4lk/django-solid-i18n-urls/issues/40)
+
+
 v1.4.0
 ------
 - Add django 1.10 support
