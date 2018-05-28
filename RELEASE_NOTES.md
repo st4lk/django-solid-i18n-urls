@@ -1,6 +1,13 @@
 solid_i18n release notes
 ========================
 
+v1.4.2
+------
+- Remove requirement for Django < 1.11 in order to use package on Django 1.11.
+
+Issues: [#43](https://github.com/st4lk/django-solid-i18n-urls/issues/43)
+
+
 v1.4.1
 ------
 - Fix minor issue with SolidLocaleRegexURLResolver
